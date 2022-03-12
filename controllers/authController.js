@@ -1,9 +1,11 @@
+/* eslint-disable operator-linebreak */
+/* eslint-disable comma-dangle */
 /* eslint-disable consistent-return */
 const jwt = require('jsonwebtoken');
 const db = require('../auth/database');
 
 exports.checkBody = (req, res, next) => {
-  if (!req.body.email || !req.body.password || !req.body.role) {
+  if (!req.body.email || !req.body.password) {
     return res.status(400).json({
       status: 'failed',
       message: 'you should enter email and password',
@@ -13,13 +15,20 @@ exports.checkBody = (req, res, next) => {
 };
 
 exports.checkBodyRegister = (req, res, next) => {
-  if (!req.body.email || !req.body.password || !req.body.role) {
+  if (
+    !req.body.email ||
+    !req.body.password ||
+    !req.body.role ||
+    !req.body.user_name
+  ) {
     return res.status(400).json({
       status: 'failed',
-      message: 'you should enter email and password and the role of user',
+      message: 'you should enter email,password,username and the role of user',
     });
   }
-  const ifUserExists = db.users.find((user) => user.email === req.body.email);
+  const ifUserExists = db.users.find(
+    (user) => user.email.toLowerCase() === req.body.email.toLowerCase()
+  );
   if (ifUserExists) {
     return res.status(400).json({
       status: 'failed',
@@ -57,5 +66,6 @@ exports.login = (req, res) => {
 exports.register = (req, res) => {
   const { email, password, role } = req.body;
   db.registerUser({ email, password, role });
-  res.json(db.users);
+  const user = db.getUserByEmail(email);
+  res.json(user);
 };

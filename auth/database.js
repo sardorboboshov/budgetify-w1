@@ -22,7 +22,7 @@ function registerUser(user) {
 }
 
 function getUserByEmail(email) {
-  return users.find((user) => user.email === email);
+  return users.find((user) => user.email.toLowerCase() === email.toLowerCase());
 }
 
 function loginUser(email, password) {
