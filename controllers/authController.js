@@ -2,6 +2,7 @@
 /* eslint-disable consistent-return */
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const validator = require('validator');
 const db = require('../auth/database');
 const User = require('../models/users');
 
@@ -34,8 +35,8 @@ exports.checkBodyRegister = async (req, res, next) => {
       message: 'user with that email exists already',
     });
   }
-  const emailIsValid = (email) => /[a-zA-Z0-9]@[a-zA-Z0-9]/.test(email);
-  if (!emailIsValid(req.body.email)) {
+
+  if (!validator.isEmail(req.body.email)) {
     return res.status(400).json({
       status: 'failed',
       message: 'invalid email',
