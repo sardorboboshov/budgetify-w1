@@ -1,5 +1,4 @@
 /* eslint-disable prefer-destructuring */
-/* eslint-disable comma-dangle */
 require('dotenv').config();
 
 const express = require('express');

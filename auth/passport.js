@@ -1,7 +1,7 @@
-const db = require('./database');
+const User = require('../models/users');
 
-const jwtCallback = (jwtPayload, done) => {
-  const user = db.getUserByEmail(jwtPayload.email);
+const jwtCallback = async (jwtPayload, done) => {
+  const user = await User.findOne({ email: jwtPayload.email });
   if (user) {
     return done(null, user);
   }

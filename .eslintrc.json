@@ -9,6 +9,10 @@
     "ecmaVersion": "latest"
   },
   "rules": {
-    "linebreak-style": "off"
+    "linebreak-style": "off",
+    "comma-dangle": "off",
+    "no-console": "off",
+    "camelcase": "off",
+    "object-curly-newline": "off"
   }
 }

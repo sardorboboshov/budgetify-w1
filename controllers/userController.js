@@ -1,20 +1,18 @@
 /* eslint-disable consistent-return */
-/* eslint-disable comma-dangle */
-const fs = require('fs');
+const User = require('../models/users');
 
-const dataOfUsers = JSON.parse(
-  fs.readFileSync(`${__dirname}/../mockData/mockData.json`)
-);
-
-exports.getAllUsers = (req, res) => {
+exports.getAllUsers = async (req, res) => {
+  const users = await User.find({});
   res.status(200).json({
     status: 'success',
-    dataOfUsers,
+    users,
   });
 };
 
-exports.checkId = (req, res, next, val) => {
-  if (!dataOfUsers[val]) {
+exports.checkId = async (req, res, next, val) => {
+  const users = await User.find({});
+
+  if (!users[val]) {
     return res.status(404).json({
       status: 'fail',
       message: 'Invalid ID',
@@ -23,36 +21,11 @@ exports.checkId = (req, res, next, val) => {
   next();
 };
 
-exports.checkBody = (req, res, next) => {
-  if (!req.body.user_name) {
-    return res.status(400).json({
-      status: 'failed',
-      message: 'you should enter user_name',
-    });
-  }
-  next();
-};
-exports.getUser = (req, res) => {
+exports.getUser = async (req, res) => {
   const id = req.params.id * 1;
-  const user = dataOfUsers[id];
+  const user = await User.find({ id });
   res.status(200).json({
     status: 'success',
     user,
   });
-};
-
-exports.createUser = (req, res) => {
-  const newId = dataOfUsers[dataOfUsers.length - 1].id + 1;
-  const newUser = { id: newId, ...req.body };
-  dataOfUsers.push(newUser);
-  fs.writeFile(
-    `${__dirname}/../mockData/mockData.json`,
-    JSON.stringify(dataOfUsers),
-    () => {
-      res.status(201).json({
-        status: 'success',
-        newUser,
-      });
-    }
-  );
 };

@@ -9,9 +9,6 @@ const router = express.Router();
 
 router.param('id', userController.checkId);
 
-router
-  .route('/')
-  .get(auth, adminGuard, userController.getAllUsers)
-  .post(userController.checkBody, userController.createUser);
+router.route('/').get(auth, adminGuard, userController.getAllUsers);
 router.route('/:id').get(userController.getUser);
 module.exports = router;

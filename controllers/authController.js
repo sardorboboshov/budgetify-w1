@@ -1,8 +1,10 @@
 /* eslint-disable operator-linebreak */
-/* eslint-disable comma-dangle */
 /* eslint-disable consistent-return */
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const validator = require('validator');
 const db = require('../auth/database');
+const User = require('../models/users');
 
 exports.checkBody = (req, res, next) => {
   if (!req.body.email || !req.body.password) {
@@ -14,7 +16,7 @@ exports.checkBody = (req, res, next) => {
   next();
 };
 
-exports.checkBodyRegister = (req, res, next) => {
+exports.checkBodyRegister = async (req, res, next) => {
   if (
     !req.body.email ||
     !req.body.password ||
@@ -26,21 +28,25 @@ exports.checkBodyRegister = (req, res, next) => {
       message: 'you should enter email,password,username and the role of user',
     });
   }
-  const ifUserExists = db.users.find(
-    (user) => user.email.toLowerCase() === req.body.email.toLowerCase()
-  );
-  if (ifUserExists) {
+  const ifUserExists = await User.find({ email: req.body.email });
+  if (Object.keys(ifUserExists).length !== 0) {
     return res.status(400).json({
       status: 'failed',
       message: 'user with that email exists already',
     });
   }
+
+  if (!validator.isEmail(req.body.email)) {
+    return res.status(400).json({
+      status: 'failed',
+      message: 'invalid email',
+    });
+  }
   next();
 };
 
-exports.login = (req, res) => {
-  const user = db.loginUser(req.body.email, req.body.password);
-
+exports.login = async (req, res) => {
+  const user = await db.loginUser(req.body.email, req.body.password);
   if (user) {
     const payload = {
       id: user.id,
@@ -63,9 +69,32 @@ exports.login = (req, res) => {
   }
 };
 
-exports.register = (req, res) => {
-  const { email, password, role } = req.body;
-  db.registerUser({ email, password, role });
-  const user = db.getUserByEmail(email);
-  res.json(user);
+exports.register = async (req, res) => {
+  try {
+    const users = await User.find({});
+    const newUser = await User.create({
+      id: users[users.length - 1].id + 1,
+      user_name: req.body.user_name,
+      email: req.body.email,
+      role: req.body.role,
+      password: bcrypt.hashSync(req.body.password, 10),
+    });
+    await newUser.save();
+
+    const payload = {
+      id: newUser.id,
+      email: newUser.email,
+      role: newUser.role,
+    };
+
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: process.env.JWT_EXPIRES_IN,
+    });
+    res.status(200).json({
+      ...payload,
+      token: `Bearer ${token}`,
+    });
+  } catch (err) {
+    res.status(401).json({ message: err });
+  }
 };
