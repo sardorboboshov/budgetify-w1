@@ -58,14 +58,14 @@ exports.login = async (req, res) => {
       expiresIn: process.env.JWT_EXPIRES_IN,
     });
 
-    res.status(200).json({
+    res.status(201).json({
       id: user.id,
       email: user.email,
       role: user.role,
       token: `Bearer ${token}`,
     });
   } else {
-    res.status(401).json({ message: 'Password or email is wrong' });
+    res.status(400).json({ message: 'Password or email is wrong' });
   }
 };
 
@@ -90,11 +90,11 @@ exports.register = async (req, res) => {
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRES_IN,
     });
-    res.status(200).json({
+    res.status(201).json({
       ...payload,
       token: `Bearer ${token}`,
     });
   } catch (err) {
-    res.status(401).json({ message: err });
+    res.status(400).json({ message: err });
   }
 };
