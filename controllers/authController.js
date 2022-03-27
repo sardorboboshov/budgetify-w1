@@ -6,6 +6,7 @@ const validator = require('validator');
 const db = require('../auth/database');
 const User = require('../models/users');
 
+// checkBody for POST /login
 exports.checkBody = (req, res, next) => {
   if (!req.body.email || !req.body.password) {
     return res.status(400).json({
@@ -16,6 +17,7 @@ exports.checkBody = (req, res, next) => {
   next();
 };
 
+// checkBody for  POST /register
 exports.checkBodyRegister = async (req, res, next) => {
   if (
     !req.body.email ||
@@ -78,6 +80,7 @@ exports.register = async (req, res) => {
       email: req.body.email,
       role: req.body.role,
       password: bcrypt.hashSync(req.body.password, 10),
+      accounts: [],
     });
     await newUser.save();
 
