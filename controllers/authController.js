@@ -74,8 +74,9 @@ exports.login = async (req, res) => {
 exports.register = async (req, res) => {
   try {
     const users = await User.find({});
+    const id = users && users.length === 0 ? 0 : users[users.length - 1].id + 1;
     const newUser = await User.create({
-      id: users[users.length - 1].id + 1,
+      id,
       user_name: req.body.user_name,
       email: req.body.email,
       role: req.body.role,
@@ -98,6 +99,6 @@ exports.register = async (req, res) => {
       token: `Bearer ${token}`,
     });
   } catch (err) {
-    res.status(400).json({ message: err });
+    res.status(400).json({ message: err.message });
   }
 };
