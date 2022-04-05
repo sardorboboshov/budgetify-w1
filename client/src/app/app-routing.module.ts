@@ -4,6 +4,7 @@ import { AuthFormComponent } from './auth/auth-form/auth-form.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { AuthGuard } from './auth/auth.guard';
+import { AuthorizedGuard } from './auth/authorized.guard';
 
 const routes: Routes = [
   {
@@ -13,7 +14,8 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    component: AuthFormComponent
+    component: AuthFormComponent,
+    canActivate: [AuthorizedGuard]
   },
   {
     path: 'categories',

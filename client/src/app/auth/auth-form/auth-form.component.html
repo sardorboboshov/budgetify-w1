@@ -17,7 +17,7 @@
     <button
       type="submit"
       color="primary"
-      [disabled]="loginForm.invalid"
+      [disabled]="!loginForm.valid"
       mat-raised-button
     >
       Login
