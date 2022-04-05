@@ -5,6 +5,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { AuthGuard } from './auth/auth.guard';
 import { AuthorizedGuard } from './auth/authorized.guard';
+import { MainPageComponent } from './main/main-page/main-page.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
     path: 'categories',
     canActivate: [AuthGuard],
     component: CategoriesComponent
+  },
+  {
+    path: 'main',
+    component: MainPageComponent
   },
   { path: '**', component: NotFoundComponent }
 ];
