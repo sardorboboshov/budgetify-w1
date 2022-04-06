@@ -25,7 +25,8 @@ const routes: Routes = [
   },
   {
     path: 'main',
-    component: MainPageComponent
+    canActivate: [AuthGuard],
+    component: MainPageComponent,
   },
   { path: '**', component: NotFoundComponent }
 ];
