@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
-const accountSchema = require('./accountSchema');
 
 const userSchema = new mongoose.Schema(
   {
@@ -29,7 +28,12 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    accounts: [accountSchema],
+    accounts: [
+      {
+        type: mongoose.ObjectId,
+        ref: 'Account',
+      },
+    ],
   },
   {
     timestamps: true,
