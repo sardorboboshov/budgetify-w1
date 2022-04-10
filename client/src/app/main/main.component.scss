@@ -10,13 +10,3 @@
     margin-top: auto;
   }
 }
-
-.container {
-  display: flex;
-
-  &__accounts,
-  &__transactions {
-    display: flex;
-    flex-direction: column;
-  }
-}

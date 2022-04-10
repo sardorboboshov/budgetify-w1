@@ -17,10 +17,8 @@ exports.checkBodyAccount = async (req, res, next) => {
 // checkBody for account: GET /:id/account_id, POST /:id/:account_id,...
 
 exports.checkAccount = async (req, res, next) => {
-  console.log('it is running');
   const { id, account_id } = req.params;
   const user = await User.findOne({ id });
-  console.log(user);
   if (!user) {
     return res.json({ message: 'User not found' });
   }
@@ -70,7 +68,7 @@ exports.getAccount = async (req, res) => {
     const { id, account_id } = req.params;
     const account = await Account.findOne({ owner: id, account_id });
     if (account) {
-      return res.json({ status: 'success', data: { account } });
+      return res.json({ account });
     }
     res.json({ status: 'fail', message: 'Account not found' });
   } catch (err) {
@@ -119,6 +117,15 @@ exports.deleteAccount = async (req, res) => {
     await user.save();
     await Transaction.deleteMany({ owner: req.params.account_id });
     res.json({ message: 'Account deleted successfully' });
+  } catch (err) {
+    res.json({ message: err.message });
+  }
+};
+
+exports.getAllAccounts = async (req, res) => {
+  try {
+    const accounts = await Account.find({ owner: req.params.id });
+    res.json({ accounts });
   } catch (err) {
     res.json({ message: err.message });
   }

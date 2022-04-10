@@ -1,12 +1,21 @@
 <mat-toolbar>
-  <span>Budgetify</span>
+  <span class="app-name">Budgetify</span>
   <div class="spacer"></div>
 
-  <button mat-button>Categories</button>
-  <button mat-button>Statistic</button>
-  <button mat-button>Admin</button>
+  <button
+    mat-button
+    class="link"
+    routerLink="categories"
+    routerLinkActive="active"
+  >
+    Categories
+  </button>
+  <button mat-button class="link" routerLinkActive="active">Statistic</button>
+  <button mat-button class="link" routerLinkActive="active">Admin</button>
   <button mat-button>
     <mat-icon>account_circle</mat-icon>
-    Maksim Verenich
+    <span class="link">
+      {{ user_name }}
+    </span>
   </button>
 </mat-toolbar>

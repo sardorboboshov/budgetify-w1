@@ -1,0 +1,29 @@
+@use 'src/variables' as var;
+
+.wrapper {
+  margin: 2rem;
+}
+
+.card {
+  color: var.$app-white;
+  display: block;
+  background: linear-gradient(to bottom right, #fcc4c4, #eec8e3, #9feefd);
+  &.selected {
+    background: linear-gradient(to bottom right, #f98484, #e9aad6, #60e3fd);
+  }
+  filter: drop-shadow(5px 10px 20px rgba(0, 0, 0, 0.25));
+  border-radius: 10px;
+  width: 380px;
+  height: 184.57px;
+  font-family: 'Space Grotesk', sans-serif;
+  cursor: pointer;
+  &__title {
+    padding: 1rem 0 0 1rem;
+    font-size: 2rem;
+  }
+
+  &__amount {
+    padding: 1rem 0 0 1rem;
+    font-size: 53px;
+  }
+}

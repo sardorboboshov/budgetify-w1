@@ -132,3 +132,18 @@ exports.deleteTransaction = async (req, res) => {
     return res.json({ message: err.message });
   }
 };
+
+exports.getAllTransActions = async (req, res) => {
+  try {
+    const { id, account_id } = req.params;
+    const transactions = await Transaction.find({
+      owner: account_id,
+      user_owner: id,
+    });
+    res.json({
+      transactions,
+    });
+  } catch (err) {
+    return res.json({ message: err.message });
+  }
+};

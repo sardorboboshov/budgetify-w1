@@ -10,6 +10,7 @@ const { jwtCallback } = require('./auth/passport');
 const usersRouter = require('./Routes/userRouter');
 const loginRouter = require('./Routes/loginRouter');
 const registerRouter = require('./Routes/registerRouter');
+const categoryRouter = require('./Routes/categoryRouter');
 
 const app = express();
 
@@ -28,4 +29,5 @@ passport.use(new JwtStrategy(opts, jwtCallback));
 app.use('/users', usersRouter);
 app.use('/login', loginRouter);
 app.use('/register', registerRouter);
+app.use('/categories', categoryRouter);
 module.exports = app;

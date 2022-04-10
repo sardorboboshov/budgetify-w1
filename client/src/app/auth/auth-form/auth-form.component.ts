@@ -24,9 +24,10 @@ export class AuthFormComponent implements OnDestroy {
     this.subscription = this.authService
       .login(email, password)
       .subscribe(() => {
-        this.router.navigate(['categories']);
+        this.router.navigate(['main']);
       });
   }
+
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
