@@ -26,6 +26,7 @@ export class AuthService {
 
   isLoggedIn() {
     const token = localStorage.getItem('idToken');
+    const userId = localStorage.getItem('userId');
     return token ? true : false;
   }
 

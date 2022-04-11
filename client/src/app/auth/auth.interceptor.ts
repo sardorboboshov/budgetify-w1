@@ -8,6 +8,7 @@ import {
   HttpErrorResponse
 } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
+import { Router } from '@angular/router';
 import { filter, tap } from 'rxjs/operators';
 import { AuthService } from './services/auth.service';
 import { SpinnerService } from '../shared/services/spinner.service';
@@ -16,7 +17,8 @@ import { SpinnerService } from '../shared/services/spinner.service';
 export class AuthInterceptor implements HttpInterceptor {
   constructor(
     private authService: AuthService,
-    private spinnerService: SpinnerService
+    private spinnerService: SpinnerService,
+    private router: Router
   ) {}
 
   intercept(
@@ -29,10 +31,21 @@ export class AuthInterceptor implements HttpInterceptor {
       const cloned = request.clone({
         headers: request.headers.set('Authorization', String(jwt))
       });
-      return next.handle(cloned).pipe(
-        filter((event: any) => event instanceof HttpResponse),
-        tap(() => this.spinnerService.hideSpinner())
-      );
+      return next
+        .handle(cloned)
+        .pipe(
+          catchError((response: HttpErrorResponse) => {
+            if (response.status === 401) {
+              this.router.navigate(['/login']);
+            }
+            this.router.navigate(['/login']);
+            return throwError(() => new Error('test'));
+          })
+        )
+        .pipe(
+          filter((event: any) => event instanceof HttpResponse),
+          tap(() => this.spinnerService.hideSpinner())
+        );
     }
     return next
       .handle(request)
