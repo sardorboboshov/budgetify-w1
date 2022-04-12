@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 })
 export class AuthFormComponent implements OnDestroy {
   private subscription!: Subscription;
+  hide = true;
   loginForm: FormGroup = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required])

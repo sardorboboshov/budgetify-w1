@@ -1,14 +1,53 @@
+.auth-container {
+  background-image: url(../../../assets/login.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &__wrapper {
+    background-color: rgba(255, 255, 255, 0.5);
+    width: 30rem;
+    height: 25rem;
+    border-radius: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
 .auth-form {
+  // display: flex;
+  // flex-direction: column;
+  // align-items: center;
+  // padding-top: 10rem;
+  // background: rgba(255, 255, 255, 0.8);
+  // border-radius: 10px;
+  // justify-content: center;
+  // align-content: center;
+  // width: 30rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 10rem;
+  width: 100%;
+  h3 {
+    font-size: 40px;
+    margin-bottom: 3rem;
+  }
 
   &__row {
-    width: 30rem;
+    width: 80%;
   }
 
-  &__form {
-    display: contents;
-  }
+  // &__form {
+  //   display: contents;
+  //   background: rgba(255, 255, 255, 0.8);
+  //   border-radius: 10px;
+  // }
 }

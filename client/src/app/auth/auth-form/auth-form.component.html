@@ -1,6 +1,10 @@
-<div class="auth-form">
+<div class="auth-container">
   <h3>Login page</h3>
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth-form__form">
+  <form
+    [formGroup]="loginForm"
+    (ngSubmit)="onSubmit()"
+    class="auth-container__wrapper"
+  >
     <mat-form-field class="auth-form__row" appearance="fill">
       <mat-label>Email</mat-label>
       <input
@@ -12,7 +16,21 @@
     </mat-form-field>
     <mat-form-field class="auth-form__row" appearance="fill">
       <mat-label>Password</mat-label>
-      <input type="password" matInput formControlName="password" />
+      <input
+        type="password"
+        matInput
+        formControlName="password"
+        [type]="hide ? 'password' : 'text'"
+      />
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="hide = !hide"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hide"
+      >
+        <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
     </mat-form-field>
     <button
       type="submit"

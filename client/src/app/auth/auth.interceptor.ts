@@ -6,8 +6,10 @@ import {
   HttpInterceptor,
   HttpErrorResponse
 } from '@angular/common/http';
-import { Observable, catchError, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { catchError, throwError } from 'rxjs';
+ 
 import { AuthService } from './services/auth.service';
 
 @Injectable()
@@ -26,7 +28,8 @@ export class AuthInterceptor implements HttpInterceptor {
       return next.handle(cloned).pipe(
         catchError((response: HttpErrorResponse) => {
           if (response.status === 401) {
-            this.router.navigate(['login']);
+            this.router.navigate(['/login']);
+
           }
           return throwError(response);
         })
