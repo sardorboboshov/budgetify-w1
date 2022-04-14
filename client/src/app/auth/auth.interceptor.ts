@@ -8,8 +8,7 @@ import {
   HttpErrorResponse
 } from '@angular/common/http';
 import { Observable, Subject, catchError, throwError } from 'rxjs';
-import { Router } from '@angular/router';
-import { filter, tap, throttleTime } from 'rxjs/operators';
+import { filter, tap } from 'rxjs/operators';
 import { AuthService } from './services/auth.service';
 import { SpinnerService } from '../shared/services/spinner.service';
 
@@ -18,8 +17,7 @@ export class AuthInterceptor implements HttpInterceptor {
   private throttleLogout = new Subject();
   constructor(
     private authService: AuthService,
-    private spinnerService: SpinnerService,
-    private router: Router
+    private spinnerService: SpinnerService
   ) {
     this.throttleLogout.subscribe(() => {
       this.authService.logout();
