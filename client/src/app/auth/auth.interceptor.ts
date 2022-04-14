@@ -7,19 +7,24 @@ import {
   HttpResponse,
   HttpErrorResponse
 } from '@angular/common/http';
-import { Observable, catchError, throwError } from 'rxjs';
+import { Observable, Subject, catchError, throwError } from 'rxjs';
 import { Router } from '@angular/router';
-import { filter, tap } from 'rxjs/operators';
+import { filter, tap, throttleTime } from 'rxjs/operators';
 import { AuthService } from './services/auth.service';
 import { SpinnerService } from '../shared/services/spinner.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
+  private throttleLogout = new Subject();
   constructor(
     private authService: AuthService,
     private spinnerService: SpinnerService,
     private router: Router
-  ) {}
+  ) {
+    this.throttleLogout.subscribe(() => {
+      this.authService.logout();
+    });
+  }
 
   intercept(
     request: HttpRequest<unknown>,
@@ -28,29 +33,17 @@ export class AuthInterceptor implements HttpInterceptor {
     this.spinnerService.showSpinner();
     if (this.authService.isLoggedIn()) {
       const jwt = this.authService.getToken();
-      const cloned = request.clone({
+      request = request.clone({
         headers: request.headers.set('Authorization', String(jwt))
       });
-      return next
-        .handle(cloned)
-        .pipe(
-          catchError((response: HttpErrorResponse) => {
-            if (response.status === 401) {
-              this.router.navigate(['/login']);
-            }
-            this.router.navigate(['/login']);
-            return throwError(() => new Error('test'));
-          })
-        )
-        .pipe(
-          filter((event: any) => event instanceof HttpResponse),
-          tap(() => this.spinnerService.hideSpinner())
-        );
     }
     return next
       .handle(request)
       .pipe(
         catchError((err: HttpErrorResponse) => {
+          if (err.status === 401) {
+            this.authService.logout();
+          }
           this.spinnerService.hideSpinner();
           return throwError(() => err);
         })

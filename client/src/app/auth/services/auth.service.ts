@@ -33,6 +33,7 @@ export class AuthService {
   logout() {
     localStorage.removeItem('idToken');
     localStorage.removeItem('userId');
+    this.router.navigate(['login']);
   }
 
   private setSession(res: any) {
