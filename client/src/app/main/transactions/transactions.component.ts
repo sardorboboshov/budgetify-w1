@@ -2,10 +2,11 @@ import {
   Component,
   OnInit,
   OnChanges,
+  OnDestroy,
   Input,
   SimpleChanges
 } from '@angular/core';
-import { Observable, pipe } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { ITransaction } from '../models/transactions-item.model';
 import { MainService } from '../services/main.service';
 
@@ -14,14 +15,14 @@ import { MainService } from '../services/main.service';
   templateUrl: './transactions.component.html',
   styleUrls: ['./transactions.component.scss']
 })
-export class TransactionsComponent implements OnInit, OnChanges {
+export class TransactionsComponent implements OnInit, OnChanges, OnDestroy {
   @Input() selectedAccountIdx: number = 0;
   transActionsData: ITransaction[] = [];
-  transActionsData$: Observable<ITransaction[]> = new Observable<[]>();
-  currency = 'USD';
-  currency$!: Observable<string>;
-
+  currency: string = '';
   typeSet: string = '';
+
+  private transactionSubscription!: Subscription;
+  private accountSubscription!: Subscription;
   constructor(private mainService: MainService) {}
 
   ngOnInit(): void {
@@ -35,18 +36,28 @@ export class TransactionsComponent implements OnInit, OnChanges {
       this.getTransActionsData();
     }
   }
+
+  ngOnDestroy(): void {
+    this.transactionSubscription.unsubscribe();
+    this.accountSubscription.unsubscribe();
+  }
+
   getTransActionsData() {
     const user_id = localStorage.getItem('userId');
-    this.mainService
+    this.transactionSubscription = this.mainService
       .getAllTransactionsData(Number(user_id), this.selectedAccountIdx)
-      .pipe((res) => (this.transActionsData$ = res));
-    this.mainService
+      .subscribe((res: any) => {
+        this.transActionsData = res.transactions;
+      });
+    this.accountSubscription = this.mainService
       .getAccountData(Number(user_id), this.selectedAccountIdx)
-      .pipe((res: any) => (this.currency$ = res.currency));
+      .subscribe((res: any) => {
+        this.currency = res.currency;
+      });
   }
   setTransActionsType(type: string) {
     const user_id = localStorage.getItem('userId');
-    this.mainService
+    this.transactionSubscription = this.mainService
       .getAllTransactionsData(Number(user_id), this.selectedAccountIdx)
       .subscribe((res: any) => {
         if (this.typeSet === type) {

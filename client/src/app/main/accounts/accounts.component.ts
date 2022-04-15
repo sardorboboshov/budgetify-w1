@@ -2,7 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { MainService } from '../services/main.service';
 import { IUser } from '../models/user.model';
 import { IAccount } from '../models/account.model';
-import { Observable, pipe } from 'rxjs';
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-accounts',
   templateUrl: './accounts.component.html',
@@ -15,7 +15,6 @@ export class AccountsComponent implements OnInit {
   selectedAccountIdx: number = 0;
   constructor(private mainService: MainService) {}
   ngOnInit() {
-    this.accountIdx.emit(this.selectedAccountIdx);
     this.setAccount();
   }
   setAccount() {

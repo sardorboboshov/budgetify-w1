@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
-import { Observable, pipe, tap, map, of } from 'rxjs';
+import { Observable, map } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -33,11 +33,8 @@ export class MainService {
   }
 
   getAllTransactionsData(id: number, accountId: number) {
-    return this.http
-      .get(`${this.userUrl}/${id}/${accountId}/transactions`)
-      .pipe(map((data: any) => data.transactions));
+    return this.http.get(`${this.userUrl}/${id}/${accountId}/transactions`);
   }
-
   getAllCategories() {
     return this.http
       .get(this.categoriesUrl)

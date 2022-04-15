@@ -6,12 +6,6 @@ exports.createCategory = async (req, res) => {
     if (!title || !type) {
       return res.json({ message: 'Title and type are required' });
     }
-    const categories = await Category.find({});
-    categories.forEach((category_) => {
-      if (category_.title.toLowerCase() === title) {
-        return res.status(400).json({ message: 'Category already exists' });
-      }
-    });
     const category = await Category.create({
       title: title.toLowerCase(),
       type,
