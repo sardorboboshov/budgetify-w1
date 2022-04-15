@@ -19,9 +19,7 @@ export class AccountsComponent implements OnInit {
   }
   setAccount() {
     const user_id = localStorage.getItem('userId');
-    this.mainService
-      .getAllAccountsData(Number(user_id))
-      .pipe((res) => (this.accounts$ = res));
+    this.accounts$ = this.mainService.getAllAccountsData(Number(user_id));
   }
   setSelectedAccount(idx: number) {
     this.selectedAccountIdx = idx;

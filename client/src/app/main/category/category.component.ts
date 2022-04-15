@@ -12,6 +12,6 @@ export class CategoryComponent implements OnInit {
   constructor(private mainService: MainService) {}
 
   ngOnInit(): void {
-    this.mainService.getAllCategories().pipe((res) => (this.categories$ = res));
+    this.categories$ = this.mainService.getAllCategories();
   }
 }
