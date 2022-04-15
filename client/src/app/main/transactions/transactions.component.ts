@@ -55,7 +55,7 @@ export class TransactionsComponent implements OnInit, OnChanges, OnDestroy {
         this.currency = res.currency;
       });
   }
-  setTransActionsType(type: string) {
+  setTransActionsType = (type: string): void => {
     const user_id = localStorage.getItem('userId');
     this.transactionSubscription = this.mainService
       .getAllTransactionsData(Number(user_id), this.selectedAccountIdx)
@@ -70,5 +70,5 @@ export class TransactionsComponent implements OnInit, OnChanges, OnDestroy {
           this.typeSet = type;
         }
       });
-  }
+  };
 }

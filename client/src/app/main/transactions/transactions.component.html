@@ -4,65 +4,11 @@
       *ngFor="let transaction of transActionsData"
       class="wrapper__container__card"
     >
-      <mat-card class="card">
-        <div class="card__category font">
-          {{ transaction.category }}
-        </div>
-        <div class="card__item-2">
-          <div class="card__item-2__title font">
-            {{ transaction.title }}
-          </div>
-          <div class="card__item-2__1">
-            <div *ngIf="transaction.type === 'expense'" class="expense">
-              <img
-                src="../../../assets/expense.png"
-                alt=""
-                class="card__item-2__1__expense"
-              />
-              <span class="font">Expenses</span>
-            </div>
-            <div *ngIf="transaction.type === 'income'" class="income">
-              <img
-                src="../../../assets/income.png"
-                alt=""
-                class="card__item-2__1__income"
-              />
-              <span class="font">Income</span>
-            </div>
-            <span>·</span>
-            <div class="card__item-2__1__date font">
-              {{ transaction.updatedAt | date: 'dd.MM.yyyy' }}
-            </div>
-          </div>
-        </div>
-        <div class="card__item-price font">
-          <span
-            [ngClass]="transaction.type === 'expense' ? 'expense' : 'income'"
-            >{{
-              transaction.amount
-                | currency: this.currency:'symbol-narrow':'1.2-2'
-            }}</span
-          >
-        </div>
-      </mat-card>
+      <app-transaction
+        [transaction]="transaction"
+        [currency]="this.currency"
+      ></app-transaction>
     </p>
   </section>
-  <section class="wrapper__container">
-    <mat-card class="type font" (click)="setTransActionsType('income')">
-      <img src="../../../assets/income.png" alt="" />
-      Income
-    </mat-card>
-    <mat-card class="type font" (click)="setTransActionsType('expense')">
-      <img src="../../../assets/expense.png" alt="" />
-      Expenses
-    </mat-card>
-    <mat-card class="type add font">
-      <img src="../../../assets/add.png" alt="" />
-      Add Transaction
-    </mat-card>
-    <mat-card class="type add font">
-      <img src="../../../assets/add.png" alt="" />
-      Add Account
-    </mat-card>
-  </section>
+  <app-activity [setTransActionsType]="setTransActionsType"> </app-activity>
 </section>

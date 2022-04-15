@@ -1,0 +1,34 @@
+@use 'src/variables.scss' as var;
+.wrapper {
+  display: flex;
+  &__container {
+    margin: 2rem;
+    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.font {
+  font-family: 'Space Grotesk', sans-serif;
+}
+.wrapper__container {
+  .type.mat-card {
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    width: 235px;
+    height: 49px;
+    padding: 0 1rem;
+    gap: 0.5rem;
+    border-radius: 10px;
+    cursor: pointer;
+    img {
+      width: 35px;
+      height: 35px;
+    }
+    &.add {
+      background: #b9e2e6;
+    }
+  }
+}

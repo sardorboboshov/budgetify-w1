@@ -1,0 +1,37 @@
+<mat-card class="card">
+  <div class="card__category font">
+    {{ transaction.category }}
+  </div>
+  <div class="card__item-2">
+    <div class="card__item-2__title font">
+      {{ transaction.title }}
+    </div>
+    <div class="card__item-2__1">
+      <div *ngIf="transaction.type === 'expense'" class="expense">
+        <img
+          src="../../../assets/expense.png"
+          alt=""
+          class="card__item-2__1__expense"
+        />
+        <span class="font">Expenses</span>
+      </div>
+      <div *ngIf="transaction.type === 'income'" class="income">
+        <img
+          src="../../../assets/income.png"
+          alt=""
+          class="card__item-2__1__income"
+        />
+        <span class="font">Income</span>
+      </div>
+      <span>·</span>
+      <div class="card__item-2__1__date font">
+        {{ transaction.updatedAt | date: 'dd.MM.yyyy' }}
+      </div>
+    </div>
+  </div>
+  <div class="card__item-price font">
+    <span [ngClass]="transaction.type === 'expense' ? 'expense' : 'income'">{{
+      transaction.amount | currency: this.currency:'symbol-narrow':'1.2-2'
+    }}</span>
+  </div>
+</mat-card>
