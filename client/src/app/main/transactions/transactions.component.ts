@@ -5,6 +5,7 @@ import {
   Input,
   SimpleChanges
 } from '@angular/core';
+import { Observable, pipe } from 'rxjs';
 import { ITransaction } from '../models/transactions-item.model';
 import { MainService } from '../services/main.service';
 
@@ -16,7 +17,10 @@ import { MainService } from '../services/main.service';
 export class TransactionsComponent implements OnInit, OnChanges {
   @Input() selectedAccountIdx: number = 0;
   transActionsData: ITransaction[] = [];
-  currency: string = '';
+  transActionsData$: Observable<ITransaction[]> = new Observable<[]>();
+  currency = 'USD';
+  currency$!: Observable<string>;
+
   typeSet: string = '';
   constructor(private mainService: MainService) {}
 
@@ -35,14 +39,10 @@ export class TransactionsComponent implements OnInit, OnChanges {
     const user_id = localStorage.getItem('userId');
     this.mainService
       .getAllTransactionsData(Number(user_id), this.selectedAccountIdx)
-      .subscribe((res: any) => {
-        this.transActionsData = res.transactions;
-      });
+      .pipe((res) => (this.transActionsData$ = res));
     this.mainService
       .getAccountData(Number(user_id), this.selectedAccountIdx)
-      .subscribe((res: any) => {
-        this.currency = res.currency;
-      });
+      .pipe((res: any) => (this.currency$ = res.currency));
   }
   setTransActionsType(type: string) {
     const user_id = localStorage.getItem('userId');

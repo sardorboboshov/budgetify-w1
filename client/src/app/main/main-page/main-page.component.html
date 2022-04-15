@@ -1,10 +1,15 @@
-<div class="container">
-  <div class="container__accounts">
-    <app-accounts (accountIdx)="setAccountIdx($event)"></app-accounts>
-  </div>
-  <div class="container__transactions">
-    <app-transactions
-      [selectedAccountIdx]="selectedAccountIdx"
-    ></app-transactions>
-  </div>
-</div>
+<mat-sidenav-container class="container">
+  <mat-sidenav-content>
+    <div class="container__accounts">
+      <app-accounts (accountIdx)="setAccountIdx($event)"></app-accounts>
+    </div>
+    <div class="container__transactions">
+      <app-transactions
+        [selectedAccountIdx]="selectedAccountIdx"
+      ></app-transactions>
+    </div>
+  </mat-sidenav-content>
+  <mat-sidenav mode="side" position="end" #transactions>
+    <app-transactions-informations></app-transactions-informations>
+  </mat-sidenav>
+</mat-sidenav-container>

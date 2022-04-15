@@ -7,22 +7,17 @@ import {
   HttpResponse,
   HttpErrorResponse
 } from '@angular/common/http';
-import { Observable, Subject, catchError, throwError } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 import { AuthService } from './services/auth.service';
 import { SpinnerService } from '../shared/services/spinner.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  private throttleLogout = new Subject();
   constructor(
     private authService: AuthService,
     private spinnerService: SpinnerService
-  ) {
-    this.throttleLogout.subscribe(() => {
-      this.authService.logout();
-    });
-  }
+  ) {}
 
   intercept(
     request: HttpRequest<unknown>,

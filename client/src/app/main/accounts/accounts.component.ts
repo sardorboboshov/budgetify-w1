@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { MainService } from '../services/main.service';
 import { IUser } from '../models/user.model';
 import { IAccount } from '../models/account.model';
+import { Observable, pipe } from 'rxjs';
 @Component({
   selector: 'app-accounts',
   templateUrl: './accounts.component.html',
@@ -10,7 +11,7 @@ import { IAccount } from '../models/account.model';
 export class AccountsComponent implements OnInit {
   @Output() accountIdx = new EventEmitter<number>();
   data!: IUser;
-  accounts: IAccount[] = [];
+  accounts$: Observable<IAccount[]> = new Observable<[]>();
   selectedAccountIdx: number = 0;
   constructor(private mainService: MainService) {}
   ngOnInit() {
@@ -21,9 +22,7 @@ export class AccountsComponent implements OnInit {
     const user_id = localStorage.getItem('userId');
     this.mainService
       .getAllAccountsData(Number(user_id))
-      .subscribe((res: any) => {
-        this.accounts = res.accounts;
-      });
+      .pipe((res) => (this.accounts$ = res));
   }
   setSelectedAccount(idx: number) {
     this.selectedAccountIdx = idx;

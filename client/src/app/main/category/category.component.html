@@ -1,5 +1,5 @@
 <div class="wrapper">
-  <div *ngFor="let category of categories" class="container">
+  <div *ngFor="let category of categories$ | async" class="container">
     <mat-card
       class="container__wrapper"
       [ngClass]="category.type === 'income' ? 'income' : 'expense'"

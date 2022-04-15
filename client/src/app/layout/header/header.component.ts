@@ -1,21 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { MainService } from '../../main/services/main.service';
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-  user_name: string = 'username';
+  userName$!: Observable<Object>;
   constructor(private mainService: MainService) {}
 
   ngOnInit(): void {
     this.setUser();
   }
   setUser() {
-    const user_id = localStorage.getItem('userId');
-    this.mainService.getData(Number(user_id)).subscribe((data: any) => {
-      this.user_name = data.user[0].user_name;
-    });
+    const userId = localStorage.getItem('userId');
+    this.mainService
+      .getAccountName(Number(userId))
+      .pipe((res) => (this.userName$ = res));
   }
 }

@@ -13,7 +13,10 @@
 
 .container {
   display: flex;
-
+  height: 98vh;
+  .mat-drawer-content {
+    display: flex !important;
+  }
   &__accounts,
   &__transactions {
     display: flex;

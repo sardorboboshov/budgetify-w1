@@ -14,7 +14,7 @@
   <button mat-button>
     <mat-icon>account_circle</mat-icon>
     <span class="link">
-      {{ user_name }}
+      {{ userName$ | async }}
     </span>
   </button>
 </mat-toolbar>

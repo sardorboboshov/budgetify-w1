@@ -9,7 +9,7 @@ import { MainComponent } from './main.component';
 import { HeaderComponent } from '../layout/header/header.component';
 import { FooterComponent } from '../layout/footer/footer.component';
 import { CategoryComponent } from './category/category.component';
-
+import { TransactionsInformationsComponent } from './transactions/transactions-informations/transactions-informations.component';
 const routes: Routes = [
   {
     path: '',
@@ -36,7 +36,8 @@ const routes: Routes = [
     HeaderComponent,
     FooterComponent,
     MainComponent,
-    CategoryComponent
+    CategoryComponent,
+    TransactionsInformationsComponent
   ],
   imports: [CommonModule, SharedModule, RouterModule.forChild(routes)]
 })

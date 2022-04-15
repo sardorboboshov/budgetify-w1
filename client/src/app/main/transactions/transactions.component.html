@@ -1,7 +1,7 @@
 <section class="wrapper">
   <section class="wrapper__container">
     <p
-      *ngFor="let transaction of transActionsData"
+      *ngFor="let transaction of transActionsData$ | async"
       class="wrapper__container__card"
     >
       <mat-card class="card">
