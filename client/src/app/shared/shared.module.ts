@@ -6,7 +6,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatCardModule } from '@angular/material/card';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @NgModule({
   declarations: [],
   imports: [
@@ -17,7 +19,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     MatIconModule,
     MatToolbarModule,
     MatGridListModule,
-    MatSidenavModule
+    MatSidenavModule,
+    MatCardModule,
+    MatProgressSpinnerModule
   ],
   exports: [
     MatInputModule,
@@ -26,7 +30,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     MatIconModule,
     MatToolbarModule,
     MatGridListModule,
-    MatSidenavModule
+    MatSidenavModule,
+    MatCardModule
   ]
 })
 export class SharedModule {}

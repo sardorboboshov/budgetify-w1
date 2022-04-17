@@ -1,0 +1,10 @@
+@use 'src/variables.scss' as var;
+.wrapper {
+  display: flex;
+  &__container {
+    margin: 2rem;
+    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+  }
+}

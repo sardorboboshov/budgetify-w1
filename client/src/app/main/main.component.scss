@@ -1,0 +1,12 @@
+.sidenav {
+  height: 100%;
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__footer {
+    margin-top: auto;
+  }
+}

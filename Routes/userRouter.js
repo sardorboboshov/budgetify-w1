@@ -29,6 +29,10 @@ router
   .delete(auth, userGuard, userController.deleteUser);
 
 router
+  .route('/:id/accounts')
+  .get(auth, userGuard, accountController.getAllAccounts);
+
+router
   .route('/:id/:account_id')
   .get(
     auth,
@@ -54,6 +58,10 @@ router
     accountController.checkAccount,
     transactionController.createTransaction
   );
+
+router
+  .route('/:id/:account_id/transactions')
+  .get(auth, userGuard, transactionController.getAllTransActions);
 
 router
   .route('/:id/:account_id/:transaction_id')

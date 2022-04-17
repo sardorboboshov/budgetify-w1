@@ -2,10 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthFormComponent } from './auth/auth-form/auth-form.component';
 import { NotFoundComponent } from './not-found/not-found.component';
-import { CategoriesComponent } from './categories/categories.component';
+// import { CategoryComponent } from './main/category/category.component';
 import { AuthGuard } from './auth/auth.guard';
 import { AuthorizedGuard } from './auth/authorized.guard';
-import { MainPageComponent } from './main/main-page/main-page.component';
 
 const routes: Routes = [
   {
@@ -19,14 +18,9 @@ const routes: Routes = [
     canActivate: [AuthorizedGuard]
   },
   {
-    path: 'categories',
-    canActivate: [AuthGuard],
-    component: CategoriesComponent
-  },
-  {
     path: 'main',
     canActivate: [AuthGuard],
-    component: MainPageComponent,
+    loadChildren: () => import('./main/main.module').then((m) => m.MainModule)
   },
   { path: '**', component: NotFoundComponent }
 ];

@@ -1,0 +1,21 @@
+<div
+  *ngFor="let account of accounts$ | async; let i = index"
+  class="wrapper"
+  #i
+>
+  <mat-card
+    class="card"
+    (click)="setSelectedAccount(i)"
+    [class.selected]="selectedAccountIdx === i"
+  >
+    <mat-card-title class="card__title">
+      {{ account.account_name }}
+    </mat-card-title>
+    <br />
+    <br />
+    <br />
+    <mat-card-content class="card__amount">
+      {{ account.amount | currency: account.currency:'symbol-narrow':'1.2-2' }}
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -10,3 +10,16 @@
     margin-top: auto;
   }
 }
+
+.container {
+  display: flex;
+  height: 98vh;
+  .mat-drawer-content {
+    display: flex !important;
+  }
+  &__accounts,
+  &__transactions {
+    display: flex;
+    flex-direction: column;
+  }
+}

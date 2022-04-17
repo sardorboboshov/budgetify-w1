@@ -2,11 +2,47 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MainPageComponent } from './main-page/main-page.component';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from '../auth/auth.guard';
-import { LayoutModule } from '../layout/layout.module';
 import { SharedModule } from '../shared/shared.module';
+import { AccountsComponent } from './accounts/accounts.component';
+import { TransactionsComponent } from './transactions/transactions.component';
+import { MainComponent } from './main.component';
+import { HeaderComponent } from '../layout/header/header.component';
+import { FooterComponent } from '../layout/footer/footer.component';
+import { CategoryComponent } from './category/category.component';
+import { TransactionsInformationsComponent } from './transactions/transactions-informations/transactions-informations.component';
+import { TransactionComponent } from './transactions/transaction/transaction.component';
+import { ActivityComponent } from './transactions/activity/activity.component';
+const routes: Routes = [
+  {
+    path: '',
+    component: MainComponent,
+    children: [
+      {
+        path: 'categories',
+        component: CategoryComponent
+      },
+      {
+        path: '',
+        component: MainPageComponent,
+        pathMatch: 'full'
+      }
+    ]
+  }
+];
+
 @NgModule({
-  declarations: [MainPageComponent],
-  imports: [CommonModule, LayoutModule, SharedModule]
+  declarations: [
+    MainPageComponent,
+    AccountsComponent,
+    TransactionsComponent,
+    HeaderComponent,
+    FooterComponent,
+    MainComponent,
+    CategoryComponent,
+    TransactionsInformationsComponent,
+    TransactionComponent,
+    ActivityComponent
+  ],
+  imports: [CommonModule, SharedModule, RouterModule.forChild(routes)]
 })
 export class MainModule {}

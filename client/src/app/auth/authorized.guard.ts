@@ -26,6 +26,6 @@ export class AuthorizedGuard implements CanActivate {
       return true;
     }
 
-    return this.router.createUrlTree(['categories']);
+    return this.router.navigate(['main']);
   }
 }

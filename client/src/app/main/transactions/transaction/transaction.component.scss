@@ -1,0 +1,90 @@
+@use 'src/variables.scss' as var;
+
+.card {
+  display: flex;
+}
+
+.font {
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.card.mat-card {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.card {
+  width: 590px;
+  height: 91px;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+
+  &__category {
+    width: 157px;
+    height: 65px;
+    background: #eceded;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    font-size: 20px;
+  }
+
+  &__item-2 {
+    font-size: 15px;
+    gap: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100%;
+    margin-top: 2rem;
+    &__title {
+      font-size: 20px;
+    }
+
+    &__1 {
+      display: flex;
+      gap: 5px;
+      width: 100%;
+      align-items: center;
+      .income,
+      .expense {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      &__expense,
+      &__income {
+        width: 30px;
+        height: 30px;
+      }
+    }
+  }
+  &__item-price {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 1rem;
+    font-size: 22px;
+    flex-grow: 1;
+    height: 100%;
+    .expense {
+      color: #ee3f19;
+      &::after {
+        content: '-';
+      }
+    }
+    .income {
+      color: #21c206;
+    }
+    .expense,
+    .income {
+      width: 100%;
+      flex-direction: row-reverse;
+      right: 0;
+      position: relative;
+      display: flex;
+    }
+  }
+}
