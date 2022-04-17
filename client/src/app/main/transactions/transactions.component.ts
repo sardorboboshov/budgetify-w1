@@ -4,7 +4,9 @@ import {
   OnChanges,
   OnDestroy,
   Input,
-  SimpleChanges
+  SimpleChanges,
+  EventEmitter,
+  Output
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ITransaction } from '../models/transactions-item.model';
@@ -17,6 +19,7 @@ import { MainService } from '../services/main.service';
 })
 export class TransactionsComponent implements OnInit, OnChanges, OnDestroy {
   @Input() selectedAccountIdx: number = 0;
+  @Output() transActionsView: EventEmitter<any> = new EventEmitter();
   transActionsData: ITransaction[] = [];
   currency: string = '';
   typeSet: string = '';
@@ -24,7 +27,9 @@ export class TransactionsComponent implements OnInit, OnChanges, OnDestroy {
   private transactionSubscription!: Subscription;
   private accountSubscription!: Subscription;
   constructor(private mainService: MainService) {}
-
+  toggle() {
+    this.transActionsView.emit();
+  }
   ngOnInit(): void {
     this.getTransActionsData();
   }

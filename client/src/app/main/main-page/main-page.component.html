@@ -1,15 +1,16 @@
 <mat-sidenav-container class="container">
   <mat-sidenav-content>
     <div class="container__accounts">
-      <app-accounts (accountIdx)="setAccountIdx($event)"></app-accounts>
+      <app-accounts (accountIdx)="setAccountIdx($event)"> </app-accounts>
     </div>
     <div class="container__transactions">
       <app-transactions
         [selectedAccountIdx]="selectedAccountIdx"
+        (transActionsView)="transactionsView.toggle()"
       ></app-transactions>
     </div>
   </mat-sidenav-content>
-  <mat-sidenav mode="side" position="end" #transactions>
+  <mat-sidenav mode="side" position="end" #transactionsView>
     <app-transactions-informations></app-transactions-informations>
   </mat-sidenav>
 </mat-sidenav-container>
