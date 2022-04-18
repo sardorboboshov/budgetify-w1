@@ -4,25 +4,3 @@
   gap: 1rem;
   flex-wrap: wrap;
 }
-
-.container__wrapper {
-  display: flex;
-  align-items: center;
-
-  gap: 1rem;
-  font-family: 'Space Grotesk', sans-serif;
-  border-radius: 10px;
-  .title {
-    font-weight: bold;
-    font-size: 1.25rem;
-  }
-  .icons {
-    cursor: pointer;
-  }
-  &.income {
-    border: 2px solid #21c206;
-  }
-  &.expense {
-    border: 2px solid #ee3f19;
-  }
-}

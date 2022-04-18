@@ -45,7 +45,9 @@ exports.createAccount = async (req, res) => {
       return res.json({ message: 'Account with this name already exists' });
     }
     const idOfNewAccount =
-      accounts && accounts.length === 0 ? 0 : accounts.length;
+      accounts && accounts.length === 0
+        ? 0
+        : accounts[accounts.length - 1].account_id + 1;
     const newAccount = await Account.create({
       account_id: idOfNewAccount,
       account_name: req.body.account_name,

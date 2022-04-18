@@ -12,6 +12,7 @@ import { CategoryComponent } from './category/category.component';
 import { TransactionsInformationsComponent } from './transactions/transactions-informations/transactions-informations.component';
 import { TransactionComponent } from './transactions/transaction/transaction.component';
 import { ActivityComponent } from './transactions/activity/activity.component';
+import { SingleCategoryComponent } from './category/single-category/single-category.component';
 const routes: Routes = [
   {
     path: '',
@@ -41,7 +42,8 @@ const routes: Routes = [
     CategoryComponent,
     TransactionsInformationsComponent,
     TransactionComponent,
-    ActivityComponent
+    ActivityComponent,
+    SingleCategoryComponent
   ],
   imports: [CommonModule, SharedModule, RouterModule.forChild(routes)]
 })

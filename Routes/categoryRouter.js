@@ -13,7 +13,7 @@ router
   .post(auth, IfUserExists, categoryController.createCategory);
 
 router
-  .route('/:category_title')
+  .route('/:category_id')
   .patch(auth, IfUserExists, categoryController.updateCategory)
   .delete(auth, IfUserExists, categoryController.deleteCategory);
 
