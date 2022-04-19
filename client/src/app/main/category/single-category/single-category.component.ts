@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ICategory } from '../../models/category.model';
 import { MainService } from '../../services/main.service';
 import {
@@ -12,7 +12,7 @@ import {
   templateUrl: './single-category.component.html',
   styleUrls: ['./single-category.component.scss']
 })
-export class SingleCategoryComponent {
+export class SingleCategoryComponent implements OnChanges {
   @Input() category!: ICategory;
   viewMode: boolean = true;
 
@@ -23,6 +23,13 @@ export class SingleCategoryComponent {
   });
 
   constructor(private mainService: MainService) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['category']) {
+      this.categoryForm.get('title')?.setValue(this.category.title);
+    }
+  }
+
   onToggleMode() {
     this.viewMode = !this.viewMode;
   }

@@ -5,13 +5,12 @@
   <form [formGroup]="categoryForm" *ngIf="!viewMode">
     <input
       class="category__title"
-      [value]="category.title"
       formControlName="title"
       [class.edit]="viewMode"
     />
   </form>
   <div class="title" *ngIf="viewMode">
-    <span>{{ category.title | titlecase }}</span>
+    <span>{{ this.categoryForm.get('title')?.value | titlecase }}</span>
   </div>
   <div class="icons">
     <mat-icon *ngIf="viewMode" (click)="onToggleMode()">edit</mat-icon>
