@@ -40,4 +40,7 @@ export class MainService {
       .get(this.categoriesUrl)
       .pipe(map((data: any) => data.categories));
   }
+  updateCategory(categoryId: string, reqBody: Object) {
+    return this.http.patch(`${this.categoriesUrl}/${categoryId}`, reqBody);
+  }
 }

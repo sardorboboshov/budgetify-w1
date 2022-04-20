@@ -1,16 +1,5 @@
 <div class="wrapper">
   <div *ngFor="let category of categories$ | async" class="container">
-    <mat-card
-      class="container__wrapper"
-      [ngClass]="category.type === 'income' ? 'income' : 'expense'"
-    >
-      <div class="title">
-        <span>{{ category.title | titlecase }}</span>
-      </div>
-      <div class="icons">
-        <mat-icon>edit</mat-icon>
-        <mat-icon>delete_outline</mat-icon>
-      </div>
-    </mat-card>
+    <app-single-category [category]="category"></app-single-category>
   </div>
 </div>

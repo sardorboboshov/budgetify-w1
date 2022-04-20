@@ -1,0 +1,20 @@
+<mat-card
+  class="container__wrapper"
+  [ngClass]="category.type === 'income' ? 'income' : 'expense'"
+>
+  <form [formGroup]="categoryForm" *ngIf="!viewMode">
+    <input
+      class="category__title"
+      formControlName="title"
+      [class.edit]="viewMode"
+    />
+  </form>
+  <div class="title" *ngIf="viewMode">
+    <span>{{ this.categoryForm.get('title')?.value | titlecase }}</span>
+  </div>
+  <div class="icons">
+    <mat-icon *ngIf="viewMode" (click)="onToggleMode()">edit</mat-icon>
+    <mat-icon *ngIf="!viewMode" (click)="updateCategory()">done</mat-icon>
+    <mat-icon>delete_outline</mat-icon>
+  </div>
+</mat-card>

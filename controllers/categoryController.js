@@ -6,11 +6,21 @@ exports.createCategory = async (req, res) => {
     if (!title || !type) {
       return res.json({ message: 'Title and type are required' });
     }
+    const categories = await Category.find({});
+    const categoryExists = await Category.find({ title });
+    if (categoryExists.length > 0) {
+      return res.json({ message: 'Category with this title already exists' });
+    }
+    const category_id =
+      categories && categories.length === 0
+        ? 0
+        : categories[categories.length - 1].category_id + 1;
     const category = await Category.create({
       title: title.toLowerCase(),
       type,
+      category_id,
     });
-    res.json({ category });
+    res.json({ data: category });
   } catch (err) {
     res.json({ message: err.message });
   }
@@ -27,7 +37,7 @@ exports.getCategories = async (req, res) => {
 
 exports.updateCategory = async (req, res) => {
   try {
-    const { category_title } = req.params;
+    const { category_id } = req.params;
     const elements = Object.keys(req.body);
     elements.forEach((element) => {
       if (element !== 'type' && element !== 'title') {
@@ -38,14 +48,16 @@ exports.updateCategory = async (req, res) => {
     });
     const category = await Category.findOneAndUpdate(
       {
-        title: category_title,
+        category_id,
       },
-      req.body
+      req.body,
+      { new: true }
     );
     if (!category) {
-      return res.status(404).json({ message: 'Category not found' });
+      return res.json({ message: 'Category not found' });
     }
     await category.save();
+    res.json({ category });
   } catch (err) {
     res.json({ message: err.message });
   }
@@ -54,10 +66,10 @@ exports.updateCategory = async (req, res) => {
 exports.deleteCategory = async (req, res) => {
   try {
     const category = await Category.findOne({
-      title: req.params.category_title,
+      category_id: req.params.category_id,
     });
     if (!category) {
-      return res.status(404).json({ message: 'Category not found' });
+      return res.json({ message: 'Category not found' });
     }
     await category.remove();
     res.json({ message: 'Category deleted successfully' });
