@@ -10,6 +10,7 @@ import { HeaderComponent } from '../layout/header/header.component';
 import { FooterComponent } from '../layout/footer/footer.component';
 import { CategoryComponent } from './category/category.component';
 import { TransactionsInformationsComponent } from './transactions/transactions-informations/transactions-informations.component';
+import { TransactionsEditComponent } from './transactions/transactions-edit/transactions-edit.component';
 import { TransactionComponent } from './transactions/transaction/transaction.component';
 import { ActivityComponent } from './transactions/activity/activity.component';
 import { SingleCategoryComponent } from './category/single-category/single-category.component';
@@ -25,6 +26,16 @@ const routes: Routes = [
       {
         path: '',
         component: MainPageComponent,
+        pathMatch: 'full'
+      },
+      {
+        path: ':accountId/:transactionId',
+        component: TransactionsInformationsComponent,
+        pathMatch: 'full'
+      },
+      {
+        path: ':accountId/:transactionId/edit',
+        component: TransactionsEditComponent,
         pathMatch: 'full'
       }
     ]
@@ -43,7 +54,8 @@ const routes: Routes = [
     TransactionsInformationsComponent,
     TransactionComponent,
     ActivityComponent,
-    SingleCategoryComponent
+    SingleCategoryComponent,
+    TransactionsEditComponent
   ],
   imports: [CommonModule, SharedModule, RouterModule.forChild(routes)]
 })

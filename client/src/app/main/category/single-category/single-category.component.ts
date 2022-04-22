@@ -14,6 +14,7 @@ import {
 })
 export class SingleCategoryComponent implements OnChanges {
   @Input() category!: ICategory;
+  @Input() rerenderCategories!: () => void;
   viewMode: boolean = true;
 
   categoryForm = new FormGroup({
@@ -42,5 +43,10 @@ export class SingleCategoryComponent implements OnChanges {
       .subscribe(() => {
         this.onToggleMode();
       });
+  }
+  deleteCategory() {
+    this.mainService.deleteCategory(this.category.category_id).subscribe(() => {
+      this.rerenderCategories();
+    });
   }
 }

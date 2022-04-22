@@ -14,4 +14,8 @@ export class CategoryComponent implements OnInit {
   ngOnInit(): void {
     this.categories$ = this.mainService.getAllCategories();
   }
+
+  rerenderCategories = () => {
+    this.categories$ = this.mainService.getAllCategories();
+  };
 }

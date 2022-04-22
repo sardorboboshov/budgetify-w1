@@ -1,0 +1,82 @@
+<mat-card class="wrapper" *ngIf="transActionData as transaction">
+  <mat-card-content class="container">
+    <mat-card-title class="title">Edit Transaction</mat-card-title>
+    <form [formGroup]="transactionForm" class="form">
+      <mat-form-field appearance="outline" class="form__outline">
+        <mat-label class="form__text">Title</mat-label>
+        <input matInput formControlName="title" class="form__text" />
+        <mat-error *ngIf="transactionForm.controls['title'].invalid"
+          >Please enter a title that doesn't exceed 128 characters</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field
+        appearance="outline"
+        class="form__outline"
+        *ngIf="categories$ | async as categories"
+      >
+        <mat-label class="form__text">Category</mat-label>
+        <mat-select
+          value="salary"
+          class="form__text"
+          [value]="transaction.category"
+          formControlName="category"
+        >
+          <mat-option
+            *ngFor="
+              let category of filteredCategories(categories, transaction.type)
+            "
+            [value]="category.title"
+            class="form__text"
+          >
+            <div class="form__text">
+              {{ category.title | titlecase }}
+            </div>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="form__outline">
+        <mat-label class="form__text"
+          >Amount in {{ transaction.currency }}</mat-label
+        >
+        <input matInput formControlName="amount" class="form__text" />
+        <mat-error *ngIf="transactionForm.controls['amount'].invalid"
+          >Please enter a number that least 0.1</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="form__outline">
+        <mat-label class="form__text">Payment Date</mat-label>
+        <input
+          matInput
+          formControlName="createdAt"
+          class="form__text"
+          [value]="transaction.createdAt"
+          [matDatepicker]="picker"
+          [min]="transaction.createdAt"
+        />
+        <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="form__outline">
+        <mat-label class="form__text">Description</mat-label>
+        <input matInput formControlName="description" class="form__text" />
+        <mat-error *ngIf="transactionForm.controls['description'].invalid"
+          >Please enter description that doesn't exceed 256
+          characters</mat-error
+        >
+      </mat-form-field>
+    </form>
+    <mat-card-content class="footer">
+      <button
+        mat-button
+        class="footer__save"
+        (click)="updateTransaction()"
+        [disabled]="invalid()"
+      >
+        Save
+      </button>
+      <button mat-button class="footer__cancel" (click)="navigate()">
+        Cancel
+      </button>
+    </mat-card-content>
+  </mat-card-content>
+</mat-card>

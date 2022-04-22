@@ -8,6 +8,7 @@ import {
   EventEmitter,
   Output
 } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ITransaction } from '../models/transactions-item.model';
 import { MainService } from '../services/main.service';
@@ -26,9 +27,9 @@ export class TransactionsComponent implements OnInit, OnChanges, OnDestroy {
 
   private transactionSubscription!: Subscription;
   private accountSubscription!: Subscription;
-  constructor(private mainService: MainService) {}
-  toggle() {
-    this.transActionsView.emit();
+  constructor(private mainService: MainService, private router: Router) {}
+  navigate(index: number) {
+    this.router.navigate(['/main', this.selectedAccountIdx, index]);
   }
   ngOnInit(): void {
     this.getTransActionsData();
