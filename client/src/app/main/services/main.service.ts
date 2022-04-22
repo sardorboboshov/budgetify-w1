@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { Observable, map, filter } from 'rxjs';
 import { environment } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root'
@@ -35,12 +35,45 @@ export class MainService {
   getAllTransactionsData(id: number, accountId: number) {
     return this.http.get(`${this.userUrl}/${id}/${accountId}/transactions`);
   }
+
+  getSingleTransactionData(
+    id: number,
+    accountId: number,
+    transactionId: number
+  ) {
+    return this.http
+      .get(`${this.userUrl}/${id}/${accountId}/${transactionId}`)
+      .pipe(map((data: any) => data.transaction));
+  }
+
+  getTransactionsDataSub(id: number, accountId: number, transactionId: number) {
+    return this.http.get(`${this.userUrl}/${id}/${accountId}/${transactionId}`);
+  }
+
+  updateTransaction(
+    id: number,
+    accountId: number,
+    transactionId: number,
+    reqBody: object
+  ) {
+    return this.http.patch(
+      `${this.userUrl}/${id}/${accountId}/${transactionId}`,
+      reqBody
+    );
+  }
+
   getAllCategories() {
     return this.http
       .get(this.categoriesUrl)
       .pipe(map((data: any) => data.categories));
   }
+  getAllCategoriesSub() {
+    return this.http.get(this.categoriesUrl);
+  }
   updateCategory(categoryId: string, reqBody: Object) {
     return this.http.patch(`${this.categoriesUrl}/${categoryId}`, reqBody);
+  }
+  deleteCategory(categoryId: string) {
+    return this.http.delete(`${this.categoriesUrl}/${categoryId}`);
   }
 }

@@ -34,6 +34,10 @@ const transactionSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    currency: {
+      type: String,
+      required: true,
+    },
     createdAt: {
       required: true,
       type: Date,
@@ -45,7 +49,7 @@ const transactionSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  { timestamps: false }
 );
 
 module.exports = mongoose.model('Transaction', transactionSchema);

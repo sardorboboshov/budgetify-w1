@@ -1,1 +1,58 @@
-<p>transactions-informations works!</p>
+<mat-card class="wrapper" *ngIf="transActionData$ | async as transaction">
+  <mat-card-content class="container">
+    <mat-card-header>
+      <mat-card-title>
+        <span> Transaction Information </span>
+      </mat-card-title>
+      <mat-card-actions>
+        <a routerLink="edit">
+          <mat-icon>edit</mat-icon>
+        </a>
+        <mat-icon>delete_outline</mat-icon>
+      </mat-card-actions>
+    </mat-card-header>
+    <mat-card-content class="price">
+      <section class="price__type">
+        <div *ngIf="transaction.type === 'expense'" class="expense">
+          <img src="../../../../assets/expense.png" alt="" />
+          <span>Expenses</span>
+        </div>
+        <div *ngIf="transaction.type === 'income'" class="income">
+          <img src="../../../../assets/income.png" alt="" />
+          <span>Income</span>
+        </div>
+      </section>
+      <span
+        [ngClass]="
+          transaction.type === 'expense' ? 'expenseAmount' : 'incomeAmount'
+        "
+      >
+        {{
+          transaction.amount
+            | currency: transaction.currency:'symbol-narrow':'1.2-2'
+        }}
+      </span>
+    </mat-card-content>
+    <mat-card-content>
+      {{ transaction.title }}
+    </mat-card-content>
+    <mat-card-content class="category">
+      <span>{{ transaction.category | titlecase }}</span>
+    </mat-card-content>
+    <mat-card-content class="details">
+      <div class="details__date">
+        <span class="details__subtitle">Payment Date:</span>
+        <span class="details__date-date">{{
+          transaction.createdAt | date: 'dd.MM.yyyy'
+        }}</span>
+      </div>
+      <mat-divider [inset]="true"></mat-divider>
+      <div class="details__description">
+        <span class="details__subtitle">Description:</span>
+        <span class="details__description-text">{{
+          transaction.description
+        }}</span>
+      </div>
+    </mat-card-content>
+  </mat-card-content>
+</mat-card>

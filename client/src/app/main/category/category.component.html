@@ -1,5 +1,8 @@
 <div class="wrapper">
   <div *ngFor="let category of categories$ | async" class="container">
-    <app-single-category [category]="category"></app-single-category>
+    <app-single-category
+      [category]="category"
+      [rerenderCategories]="rerenderCategories"
+    ></app-single-category>
   </div>
 </div>

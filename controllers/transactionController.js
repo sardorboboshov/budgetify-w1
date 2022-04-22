@@ -21,11 +21,12 @@ exports.checkTransaction = async (req, res, next) => {
 
 exports.getTransaction = async (req, res) => {
   try {
-    const { transaction_id, account_id } = req.params;
-    const transaction = await Transaction.findOne({
-      transaction_id,
+    const { transaction_id, account_id, id } = req.params;
+    const transactions = await Transaction.find({
       owner: account_id,
+      user_owner: id,
     });
+    const transaction = transactions[transaction_id];
     if (!transaction) {
       return res.json({
         status: 'fail',
@@ -48,7 +49,7 @@ exports.createTransaction = async (req, res) => {
       owner: id,
       account_id: Number(account_id),
     });
-    const { transactions } = account;
+    const { transactions, currency } = account;
     const transaction_id =
       transactions && transactions.length === 0 ? 0 : transactions.length;
     const { title, category, amount, description, type } = req.body;
@@ -71,6 +72,7 @@ exports.createTransaction = async (req, res) => {
       description,
       owner: account_id,
       user_owner: id,
+      currency,
     });
     await newTransaction.save();
     await account.transactions.push(newTransaction.id);
@@ -91,6 +93,7 @@ exports.updateTransaction = async (req, res) => {
       'category',
       'amount',
       'description',
+      'createdAt',
     ];
     const elements = Object.keys(req.body);
     elements.forEach((element) => {
@@ -104,11 +107,15 @@ exports.updateTransaction = async (req, res) => {
       {
         transaction_id: req.params.transaction_id,
         owner: req.params.account_id,
+        user_owner: req.params.id,
       },
-      req.body
+      req.body,
+      {
+        new: true,
+      }
     );
     if (!transaction) {
-      return res.status(404).json({ message: 'Transaction not found' });
+      return res.json({ message: 'Transaction not found' });
     }
     await transaction.save();
     res.json({ transaction });

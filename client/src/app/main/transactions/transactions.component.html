@@ -7,7 +7,7 @@
       <app-transaction
         [transaction]="transaction"
         [currency]="this.currency"
-        (click)="toggle()"
+        (click)="navigate(transaction.transaction_id)"
       ></app-transaction>
     </p>
   </section>
