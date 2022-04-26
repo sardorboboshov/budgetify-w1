@@ -5,6 +5,9 @@
     (ngSubmit)="onSubmit()"
     class="auth-container__wrapper"
   >
+    <span class="auth-form__error" *ngIf="isWrongCredentials"
+      >Password or Email is wrong</span
+    >
     <mat-form-field class="auth-form__row" appearance="fill">
       <mat-label>Email</mat-label>
       <input
@@ -32,10 +35,11 @@
         <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
       </button>
     </mat-form-field>
+
     <button
       type="submit"
       color="primary"
-      [disabled]="!loginForm.valid"
+      [disabled]="!loginForm.valid || !loginForm.dirty"
       mat-raised-button
     >
       Login
