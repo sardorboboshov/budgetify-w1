@@ -116,12 +116,12 @@ export class TransactionsAddComponent implements OnInit {
         },
         error: (err) => {
           this.snackBar.open('Something went wrong, please try again', 'OK', {
-            duration: 1600
+            duration: 2000
           });
         },
         complete: () => {
           this.snackBar.open('Transaction created successfully', 'OK', {
-            duration: 1600,
+            duration: 2000,
             verticalPosition: 'top'
           });
         }

@@ -42,13 +42,13 @@ export class AddCategoryComponent {
       error: (err) => {
         this.dialogRef.close();
         this.snackBar.open('Such category already exists', 'OK', {
-          duration: 1600,
+          duration: 2000,
           verticalPosition: 'top'
         });
       },
       complete: () => {
         this.snackBar.open('Category created successfully', 'OK', {
-          duration: 1600,
+          duration: 2000,
           verticalPosition: 'top'
         });
       }

@@ -14,4 +14,12 @@
   border-bottom: 1px solid black;
   border-radius: 0;
 }
- 
+
+.menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .logout {
+    padding: 0;
+  }
+}

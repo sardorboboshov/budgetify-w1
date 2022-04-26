@@ -1,11 +1,12 @@
 <div class="auth-container">
-  <h3>Login page</h3>
   <form
     [formGroup]="loginForm"
     (ngSubmit)="onSubmit()"
     class="auth-container__wrapper"
   >
-    <span class="auth-form__error" *ngIf="isWrongCredentials"
+    <span
+      class="auth-form__error"
+      *ngIf="isWrongCredentials && !this.loginForm.dirty"
       >Password or Email is wrong</span
     >
     <mat-form-field class="auth-form__row" appearance="fill">

@@ -29,7 +29,6 @@ export class AuthFormComponent implements OnDestroy {
       },
       error: (e) => {
         this.isWrongCredentials = true;
-        console.log('Wrong credentials');
         this.loginForm.markAsPristine();
       }
     });
