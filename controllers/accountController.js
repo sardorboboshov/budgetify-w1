@@ -59,10 +59,12 @@ exports.createAccount = async (req, res) => {
     const accounts = await Account.find({ owner: user_id });
     const AccountExists = await Account.findOne({
       owner: user_id,
-      account_name: req.body.account_name,
+      account_name: req.body.account_name.toLowerCase(),
     });
     if (AccountExists) {
-      return res.json({ message: 'Account with this title already exists' });
+      return res
+        .status(400)
+        .json({ message: 'Account with this title already exists' });
     }
     const idOfNewAccount =
       accounts && accounts.length === 0
@@ -70,7 +72,7 @@ exports.createAccount = async (req, res) => {
         : accounts[accounts.length - 1].account_id + 1;
     const newAccount = await Account.create({
       account_id: idOfNewAccount,
-      account_name: req.body.account_name,
+      account_name: req.body.account_name.toLowerCase(),
       amount: 0,
       currency: req.body.currency,
       owner: user_id,
