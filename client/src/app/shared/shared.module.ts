@@ -18,6 +18,8 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatMenuModule } from '@angular/material/menu';
 @NgModule({
   declarations: [],
   imports: [
@@ -39,7 +41,9 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatRadioModule,
     MatSelectModule,
     FormsModule,
-    MatDialogModule
+    MatDialogModule,
+    MatExpansionModule,
+    MatMenuModule
   ],
   exports: [
     MatInputModule,
@@ -58,7 +62,9 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatRadioModule,
     MatSelectModule,
     FormsModule,
-    MatDialogModule
+    MatDialogModule,
+    MatExpansionModule,
+    MatMenuModule
   ]
 })
 export class SharedModule {}

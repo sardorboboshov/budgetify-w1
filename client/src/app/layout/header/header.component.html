@@ -13,10 +13,22 @@
 
   <button mat-button class="link" routerLinkActive="active">Statistic</button>
   <button mat-button class="link" routerLinkActive="active">Admin</button>
-  <button mat-button>
+  <!-- <button mat-button>
+    <mat-icon>account_circle</mat-icon>
+    <span class="link">
+      {{ userName$ | async }}
+    </span>
+  </button> -->
+  <button mat-button [matMenuTriggerFor]="menu">
     <mat-icon>account_circle</mat-icon>
     <span class="link">
       {{ userName$ | async }}
     </span>
   </button>
+  <mat-menu #menu="matMenu">
+    <section class="menu">
+      <mat-icon>logout</mat-icon>
+      <span mat-menu-item class="link logout" (click)="logout()">Logout</span>
+    </section>
+  </mat-menu>
 </mat-toolbar>

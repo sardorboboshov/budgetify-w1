@@ -107,7 +107,8 @@ export class TransactionsEditComponent implements OnInit, OnDestroy {
       this.transactionForm.get('amount')?.invalid ||
       this.transactionForm.get('createdAt')?.invalid ||
       this.transactionForm.get('category')?.invalid ||
-      this.transactionForm.get('description')?.invalid
+      this.transactionForm.get('description')?.invalid ||
+      !this.transactionForm.dirty
     );
   }
   updateTransaction() {
@@ -128,12 +129,12 @@ export class TransactionsEditComponent implements OnInit, OnDestroy {
         },
         error: (err) => {
           this.snackBar.open('Something went wrong, please try again', 'OK', {
-            duration: 1600
+            duration: 2000
           });
         },
         complete: () => {
           this.snackBar.open('Transaction updated successfully', 'OK', {
-            duration: 1600,
+            duration: 2000,
             verticalPosition: 'top'
           });
         }
