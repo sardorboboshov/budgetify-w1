@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 })
 export class AuthFormComponent implements OnDestroy {
   private subscription!: Subscription;
+  public isWrongCredentials: boolean = false;
   hide = true;
   loginForm: FormGroup = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -20,16 +21,25 @@ export class AuthFormComponent implements OnDestroy {
   constructor(private authService: AuthService, private router: Router) {}
 
   onSubmit() {
+    console.log(this.loginForm);
     const { email, password } = this.loginForm.value;
-    this.subscription = this.authService
-      .login(email, password)
-      .subscribe(() => {
+    this.subscription = this.authService.login(email, password).subscribe({
+      next: () => {
         this.router.navigate(['main']);
-      });
+      },
+      error: (e) => {
+        this.isWrongCredentials = true;
+        console.log('Wrong credentials');
+        this.loginForm.markAsPristine();
+      }
+    });
   }
-
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+  disabled() {
+    console.log(this.loginForm.invalid, this.loginForm.dirty);
+    return this.loginForm.invalid || !this.loginForm.dirty;
   }
 }
