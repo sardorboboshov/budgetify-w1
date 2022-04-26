@@ -48,9 +48,11 @@ export class SingleCategoryComponent implements OnChanges {
           this.snackBar.open(err.error.message, 'OK', {
             duration: 2000
           });
+          this.categoryForm.get('title')?.setValue(this.category.title);
+          this.onToggleMode();
         },
         complete: () => {
-          this.snackBar.open('Category deleted successfully', 'OK', {
+          this.snackBar.open('Category updated successfully', 'OK', {
             duration: 2000,
             verticalPosition: 'top'
           });
