@@ -45,7 +45,7 @@ export class SingleCategoryComponent implements OnChanges {
           this.onToggleMode();
         },
         error: (err) => {
-          this.snackBar.open('Such category already exists', 'OK', {
+          this.snackBar.open(err.error.message, 'OK', {
             duration: 2000
           });
         },
@@ -64,7 +64,7 @@ export class SingleCategoryComponent implements OnChanges {
         this.rerenderCategories();
       },
       error: (err) => {
-        this.snackBar.open('Something went wrong, please try again', 'OK', {
+        this.snackBar.open(err.error.message, 'OK', {
           duration: 2000
         });
       },

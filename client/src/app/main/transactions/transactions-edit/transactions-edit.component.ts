@@ -128,7 +128,7 @@ export class TransactionsEditComponent implements OnInit, OnDestroy {
           this.navigate();
         },
         error: (err) => {
-          this.snackBar.open('Something went wrong, please try again', 'OK', {
+          this.snackBar.open(err.error.message, 'OK', {
             duration: 2000
           });
         },
