@@ -1,14 +1,16 @@
 <mat-toolbar>
   <h1 class="app-name">Budgetify</h1>
-
+  <button mat-button class="link categories" routerLink="">Main</button>
   <button
     mat-button
-    class="link categories"
+    class="link"
     routerLink="categories"
     routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }"
   >
     Categories
   </button>
+
   <button mat-button class="link" routerLinkActive="active">Statistic</button>
   <button mat-button class="link" routerLinkActive="active">Admin</button>
   <button mat-button>

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MainPageComponent } from './main-page/main-page.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import { AccountsComponent } from './accounts/accounts.component';
@@ -14,6 +15,14 @@ import { TransactionsEditComponent } from './transactions/transactions-edit/tran
 import { TransactionComponent } from './transactions/transaction/transaction.component';
 import { ActivityComponent } from './transactions/activity/activity.component';
 import { SingleCategoryComponent } from './category/single-category/single-category.component';
+import { AddCategoryComponent } from './category/add-category/add-category.component';
+import { TransactionsAddComponent } from './transactions/transactions-add/transactions-add.component';
+import { AccountInformationsComponent } from './accounts/accounts-informations/account-informations.component';
+import { TransactionDeleteComponent } from './transactions/transaction-delete/transaction-delete.component';
+import { AccountAddComponent } from './accounts/account-add/account-add.component';
+import { AccountUpdateComponent } from './accounts/account-update/account-update.component';
+import { CategoryDeleteComponent } from './category/category-delete/category-delete.component';
+import { AccountDeleteComponent } from './accounts/account-delete/account-delete.component';
 const routes: Routes = [
   {
     path: '',
@@ -55,8 +64,21 @@ const routes: Routes = [
     TransactionComponent,
     ActivityComponent,
     SingleCategoryComponent,
-    TransactionsEditComponent
+    TransactionsEditComponent,
+    AddCategoryComponent,
+    TransactionsAddComponent,
+    AccountInformationsComponent,
+    TransactionDeleteComponent,
+    AccountAddComponent,
+    AccountUpdateComponent,
+    CategoryDeleteComponent,
+    AccountDeleteComponent
   ],
-  imports: [CommonModule, SharedModule, RouterModule.forChild(routes)]
+  imports: [
+    CommonModule,
+    SharedModule,
+    MatSnackBarModule,
+    RouterModule.forChild(routes)
+  ]
 })
 export class MainModule {}

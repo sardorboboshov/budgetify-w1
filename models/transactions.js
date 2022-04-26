@@ -41,7 +41,6 @@ const transactionSchema = new mongoose.Schema(
     createdAt: {
       required: true,
       type: Date,
-      max: new Date().getTime(),
       default: new Date().getTime(),
     },
     transaction_id: {

@@ -3,10 +3,11 @@ const Transaction = require('../models/transactions');
 
 exports.checkTransaction = async (req, res, next) => {
   try {
-    const { transaction_id, account_id } = req.params;
+    const { transaction_id, account_id, id } = req.params;
     const transaction = await Transaction.findOne({
       transaction_id,
       owner: account_id,
+      user_owner: id,
     });
     if (!transaction) {
       return res.json({ message: 'Transaction not found' });
@@ -22,11 +23,11 @@ exports.checkTransaction = async (req, res, next) => {
 exports.getTransaction = async (req, res) => {
   try {
     const { transaction_id, account_id, id } = req.params;
-    const transactions = await Transaction.find({
+    const transaction = await Transaction.findOne({
       owner: account_id,
       user_owner: id,
+      transaction_id,
     });
-    const transaction = transactions[transaction_id];
     if (!transaction) {
       return res.json({
         status: 'fail',
@@ -45,24 +46,20 @@ exports.getTransaction = async (req, res) => {
 exports.createTransaction = async (req, res) => {
   try {
     const { id, account_id } = req.params;
-    const account = await Account.findOne({
+    const accounts = await Account.find({
       owner: id,
-      account_id: Number(account_id),
     });
-    const { transactions, currency } = account;
-    const transaction_id =
-      transactions && transactions.length === 0 ? 0 : transactions.length;
-    const { title, category, amount, description, type } = req.body;
-    const transactionExists = await Transaction.findOne({
-      title,
+    const account = accounts[account_id];
+    const { currency } = account;
+    const transactions = await Transaction.find({
       owner: account_id,
+      user_owner: id,
     });
-    if (transactionExists) {
-      return res.json({
-        status: 'fail',
-        message: 'Transaction with this title already exists',
-      });
-    }
+    const transaction_id =
+      transactions && transactions.length === 0
+        ? 0
+        : transactions[transactions.length - 1].transaction_id + 1;
+    const { title, category, amount, description, type, createdAt } = req.body;
     const newTransaction = await Transaction.create({
       transaction_id,
       type,
@@ -73,9 +70,14 @@ exports.createTransaction = async (req, res) => {
       owner: account_id,
       user_owner: id,
       currency,
+      createdAt,
     });
     await newTransaction.save();
-    await account.transactions.push(newTransaction.id);
+    if (type === 'expense') {
+      account.amount -= newTransaction.amount;
+    } else {
+      account.amount += newTransaction.amount;
+    }
     await account.save();
     res.json({
       message: 'Transaction created successfully',
@@ -103,6 +105,23 @@ exports.updateTransaction = async (req, res) => {
         });
       }
     });
+    if (req.body.amount) {
+      const transaction = await Transaction.findOne({
+        transaction_id: req.params.transaction_id,
+        owner: req.params.account_id,
+        user_owner: req.params.id,
+      });
+      const account = await Account.findOne({
+        owner: req.params.id,
+        account_id: req.params.account_id,
+      });
+      if (transaction.type === 'expense') {
+        account.amount += transaction.amount - Number(req.body.amount);
+      } else {
+        account.amount -= transaction.amount - Number(req.body.amount);
+      }
+      await account.save();
+    }
     const transaction = await Transaction.findOneAndUpdate(
       {
         transaction_id: req.params.transaction_id,
@@ -129,11 +148,19 @@ exports.deleteTransaction = async (req, res) => {
     const transaction = await Transaction.findOne({
       transaction_id: req.params.transaction_id,
       owner: req.params.account_id,
+      user_owner: req.params.id,
     });
-    const account = await Account.findOne({ id: req.params.account_id });
-    await account.transactions.splice(req.params.transaction_id, 1);
-    await transaction.remove();
+    const accounts = await Account.find({
+      owner: req.params.id,
+    });
+    const account = accounts[req.params.account_id];
+    if (transaction.type === 'expense') {
+      account.amount += transaction.amount;
+    } else {
+      account.amount -= transaction.amount;
+    }
     await account.save();
+    await transaction.remove();
     res.status(200).json({ message: 'Transaction deleted successfully' });
   } catch (err) {
     return res.json({ message: err.message });

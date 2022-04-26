@@ -2,13 +2,13 @@ const User = require('../models/users');
 const Account = require('../models/accounts');
 const Transaction = require('../models/transactions');
 
-// checkBody registerAccount for PATCH /:id
+// checkBody registerAccount for POST /:id
 
 exports.checkBodyAccount = async (req, res, next) => {
-  if (!req.body.account_name || !req.body.amount || !req.body.currency) {
+  if (!req.body.account_name || !req.body.currency) {
     return res.json({
       status: 'failed',
-      message: 'you should enter name,amount and currency for that account',
+      message: 'you should enter title and currency for that account',
     });
   }
   next();
@@ -22,27 +22,47 @@ exports.checkAccount = async (req, res, next) => {
   if (!user) {
     return res.json({ message: 'User not found' });
   }
-  const { accounts } = user;
-  const account = accounts[account_id];
+  // const { accounts } = user;
+  const account = await Account.findOne({
+    account_id,
+    owner: id,
+  });
   if (!account) {
     return res.json({ message: 'Account not found' });
   }
   next();
 };
 
-// create account for PATCH /:id
+exports.checkAccount2 = async (req, res, next) => {
+  try {
+    const { id, account_id } = req.params;
+    const user = await User.findOne({ id });
+    if (!user) {
+      return res.json({ message: 'User not found' });
+    }
+    const accounts = await Account.find({ owner: id });
+    const account = accounts[account_id];
+    if (!account) {
+      return res.json({ message: 'Account not found' });
+    }
+    next();
+  } catch (err) {
+    res.json({ message: err.message });
+  }
+};
+
+// create account for POST /:id
 
 exports.createAccount = async (req, res) => {
   try {
     const user_id = req.params.id * 1;
-    const user = await User.findOne({ id: user_id });
-    const { accounts } = user;
+    const accounts = await Account.find({ owner: user_id });
     const AccountExists = await Account.findOne({
       owner: user_id,
       account_name: req.body.account_name,
     });
     if (AccountExists) {
-      return res.json({ message: 'Account with this name already exists' });
+      return res.json({ message: 'Account with this title already exists' });
     }
     const idOfNewAccount =
       accounts && accounts.length === 0
@@ -51,14 +71,13 @@ exports.createAccount = async (req, res) => {
     const newAccount = await Account.create({
       account_id: idOfNewAccount,
       account_name: req.body.account_name,
-      amount: req.body.amount,
+      amount: 0,
       currency: req.body.currency,
       owner: user_id,
       transactions: [],
+      description: req.body.description,
     });
     await newAccount.save();
-    await user.accounts.push(newAccount.id);
-    await user.save();
     res.json({ message: 'Account created successfully', data: newAccount });
   } catch (err) {
     res.json({ message: err.message });
@@ -68,7 +87,8 @@ exports.createAccount = async (req, res) => {
 exports.getAccount = async (req, res) => {
   try {
     const { id, account_id } = req.params;
-    const account = await Account.findOne({ owner: id, account_id });
+    const accounts = await Account.find({ owner: id });
+    const account = accounts[account_id];
     if (account) {
       return res.json({ account });
     }
@@ -79,12 +99,7 @@ exports.getAccount = async (req, res) => {
 };
 exports.updateAccount = async (req, res) => {
   try {
-    const typesOfAccountElements = [
-      'account_name',
-      'amount',
-      'currency',
-      'transactions',
-    ];
+    const typesOfAccountElements = ['account_name', 'description'];
     const elements = Object.keys(req.body);
     elements.forEach((element) => {
       if (typesOfAccountElements.indexOf(element) === -1) {
@@ -93,14 +108,14 @@ exports.updateAccount = async (req, res) => {
         });
       }
     });
-    const account = await Account.findOneAndUpdate(
-      {
-        account_id: req.params.account_id,
-      },
-      req.body,
-      { new: true }
-    );
-
+    const accounts = await Account.find({ owner: req.params.id });
+    const account = accounts[req.params.account_id];
+    if (req.body.account_name) {
+      account.account_name = req.body.account_name;
+    }
+    if (req.body.description) {
+      account.description = req.body.description;
+    }
     await account.save();
     res.json({ account });
   } catch (err) {
@@ -110,16 +125,18 @@ exports.updateAccount = async (req, res) => {
 
 exports.deleteAccount = async (req, res) => {
   try {
-    const account = await Account.findOne({
-      account_id: req.params.account_id,
+    const accounts = await Account.find({
+      owner: req.params.id,
     });
-    const user = await User.findOne({ id: req.params.id });
-    await user.accounts.splice(req.params.account_id, 1);
+    const account = accounts[req.params.account_id];
     await account.remove();
-    await user.save();
-    await Transaction.deleteMany({ owner: req.params.account_id });
+    await Transaction.deleteMany({
+      owner: req.params.account_id,
+      user_owner: req.params.id,
+    });
     res.json({ message: 'Account deleted successfully' });
   } catch (err) {
+    console.log(err);
     res.json({ message: err.message });
   }
 };
@@ -128,6 +145,18 @@ exports.getAllAccounts = async (req, res) => {
   try {
     const accounts = await Account.find({ owner: req.params.id });
     res.json({ accounts });
+  } catch (err) {
+    res.json({ message: err.message });
+  }
+};
+
+exports.getAccountCurrency = async (req, res) => {
+  try {
+    const account = await Account.findOne({
+      account_id: req.params.account_id,
+      owner: req.params.id,
+    });
+    res.json({ currency: account.currency });
   } catch (err) {
     res.json({ message: err.message });
   }

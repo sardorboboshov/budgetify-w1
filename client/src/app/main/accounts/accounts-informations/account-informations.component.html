@@ -1,0 +1,52 @@
+<section class="wrapper" *ngIf="account$ | async as account">
+  <section class="wrapper__wrap">
+    <section class="container">
+      <section class="header">
+        <span class="header__title">Account Information</span>
+        <mat-icon class="header__edit icon" (click)="onNoClick(); openDialog()"
+          >edit</mat-icon
+        >
+        <mat-icon class="icon" (click)="onNoClick(); openDeleteDialog()"
+          >delete_outline</mat-icon
+        >
+        <mat-icon class="icon" (click)="onNoClick()">close</mat-icon>
+      </section>
+      <mat-list class="details">
+        <section class="details-items">
+          <span class="details__key">Title:</span>
+          <span class="details__value">{{
+            account.account_name | titlecase
+          }}</span>
+        </section>
+        <mat-divider></mat-divider>
+        <section class="details-items">
+          <span class="details__key">Balance:</span>
+          <span class="details__value">{{
+            account.amount | currency: account.currency:'symbol-narrow':'1.2-2'
+          }}</span>
+        </section>
+        <mat-divider></mat-divider>
+        <section class="details-items">
+          <span class="details__key">Currency:</span>
+          <span class="details__value"
+            >{{ account.currency }} ({{
+              getCurrencySymbol(account.currency)
+            }})</span
+          >
+        </section>
+        <mat-divider></mat-divider>
+        <section
+          class="details-items"
+          *ngIf="account.description as description"
+        >
+          <span class="details__key">Description:</span>
+          <span class="details__value">{{ description }}</span>
+        </section>
+        <mat-divider *ngIf="account.description"></mat-divider>
+      </mat-list>
+    </section>
+    <section class="footer">
+      <button mat-button (click)="onNoClick()">Close</button>
+    </section>
+  </section>
+</section>

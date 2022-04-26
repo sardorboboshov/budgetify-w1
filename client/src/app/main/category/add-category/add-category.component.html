@@ -1,0 +1,59 @@
+<section class="wrapper">
+  <section>
+    <mat-card-title class="title">
+      <span> Add Category </span>
+      <mat-icon class="icon" (click)="onNoClick()">close</mat-icon>
+    </mat-card-title>
+    <form [formGroup]="categoryForm">
+      <mat-radio-group class="type" formControlName="type">
+        <mat-radio-button
+          mat-button
+          value="expense"
+          class="type__container"
+          [class.active]="chosenType === 'expense'"
+          [class.notActive]="chosenType !== 'expense'"
+          (click)="setType('expense')"
+        >
+          <section class="type__container__content">
+            <img src="../../../../assets/expense.png" alt="" />
+            <span>Expenses</span>
+          </section>
+        </mat-radio-button>
+
+        <mat-radio-button
+          mat-button
+          value="income"
+          class="type__container"
+          [class.active]="chosenType === 'income'"
+          [class.notActive]="chosenType !== 'income'"
+          (click)="setType('income')"
+        >
+          <section class="type__container__content">
+            <img src="../../../../assets/income.png" alt="" />
+            <span>Income</span>
+          </section>
+        </mat-radio-button>
+      </mat-radio-group>
+      <mat-form-field appearance="outline" class="title-input">
+        <mat-label>Title</mat-label>
+        <input matInput class="category-title" formControlName="title" />
+        <mat-error *ngIf="categoryForm.controls['title'].invalid"
+          >Title required</mat-error
+        >
+      </mat-form-field>
+    </form>
+  </section>
+  <section class="footer">
+    <section class="footer__container">
+      <button
+        mat-button
+        class="footer__container__save"
+        [disabled]="categoryForm.controls['title'].invalid"
+        (click)="save()"
+      >
+        Save
+      </button>
+      <button mat-button (click)="onNoClick()">Cancel</button>
+    </section>
+  </section>
+</section>

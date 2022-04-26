@@ -1,0 +1,17 @@
+.content {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.25rem;
+}
+.actions {
+  display: flex;
+  flex-direction: row-reverse;
+  button {
+    border-radius: 10px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1rem;
+  }
+  &__yes {
+    background: #b9e2e6;
+    border-radius: 10px;
+  }
+}

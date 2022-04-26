@@ -1,15 +1,20 @@
 <section class="wrapper">
   <section class="wrapper__container">
     <p
-      *ngFor="let transaction of transActionsData"
+      *ngFor="let transaction of displayTransactionsData"
       class="wrapper__container__card"
     >
       <app-transaction
         [transaction]="transaction"
-        [currency]="this.currency"
         (click)="navigate(transaction.transaction_id)"
       ></app-transaction>
     </p>
   </section>
-  <app-activity [setTransActionsType]="setTransActionsType"> </app-activity>
+  <app-activity
+    [setTransActionsType]="setTransActionsType"
+    [accountIdx]="selectedAccountIdx"
+    [rerenderTransactions]="rerenderTransactions"
+    [rerenderAccounts]="rerenderAccounts"
+  >
+  </app-activity>
 </section>

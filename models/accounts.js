@@ -18,19 +18,17 @@ const accountSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    transactions: [
-      {
-        type: mongoose.ObjectId,
-        ref: 'Transaction',
-      },
-    ],
     owner: {
       type: Number,
       required: true,
     },
+    description: {
+      type: String,
+      maxLength: 256,
+    },
   },
   {
-    timestamps: true,
+    timestamps: false,
   }
 );
 

@@ -1,10 +1,10 @@
 <mat-card class="card">
   <div class="card__category font">
-    {{ transaction.category }}
+    {{ transaction.category | titlecase }}
   </div>
   <div class="card__item-2">
     <div class="card__item-2__title font">
-      {{ transaction.title }}
+      {{ transaction.title | titlecase }}
     </div>
     <div class="card__item-2__1">
       <div *ngIf="transaction.type === 'expense'" class="expense">
@@ -31,7 +31,8 @@
   </div>
   <div class="card__item-price font">
     <span [ngClass]="transaction.type === 'expense' ? 'expense' : 'income'">{{
-      transaction.amount | currency: this.currency:'symbol-narrow':'1.2-2'
+      transaction.amount
+        | currency: transaction.currency:'symbol-narrow':'1.2-2'
     }}</span>
   </div>
 </mat-card>

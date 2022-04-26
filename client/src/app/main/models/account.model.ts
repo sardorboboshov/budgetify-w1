@@ -4,4 +4,6 @@ export interface IAccount {
   amount: number;
   currency: string;
   transactions: string[];
+  createdAt: string;
+  description: string;
 }

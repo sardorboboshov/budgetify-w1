@@ -8,6 +8,5 @@ import { ITransaction } from '../../models/transactions-item.model';
 })
 export class TransactionComponent {
   @Input() transaction!: ITransaction;
-  @Input() currency!: string;
   constructor() {}
 }
