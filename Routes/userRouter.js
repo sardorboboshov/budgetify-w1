@@ -37,31 +37,30 @@ router
   .get(
     auth,
     userGuard,
-    accountController.checkAccount,
+    accountController.checkAccount2,
     accountController.getAccount
   )
   .patch(
     auth,
     userGuard,
-    accountController.checkAccount,
+    // accountController.checkAccount2,
     accountController.updateAccount
   )
-  .delete(
-    auth,
-    userGuard,
-    accountController.checkAccount,
-    accountController.deleteAccount
-  )
+  .delete(auth, userGuard, accountController.deleteAccount)
   .post(
     auth,
     userGuard,
-    accountController.checkAccount,
+    accountController.checkAccount2,
     transactionController.createTransaction
   );
 
 router
   .route('/:id/:account_id/transactions')
   .get(auth, userGuard, transactionController.getAllTransActions);
+
+router
+  .route('/:id/:account_id/currency')
+  .get(auth, userGuard, accountController.getAccountCurrency);
 
 router
   .route('/:id/:account_id/:transaction_id')

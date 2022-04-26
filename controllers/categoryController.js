@@ -7,9 +7,14 @@ exports.createCategory = async (req, res) => {
       return res.json({ message: 'Title and type are required' });
     }
     const categories = await Category.find({});
-    const categoryExists = await Category.find({ title });
+    const categoryExists = await Category.find({
+      title: title.toLowerCase(),
+      type,
+    });
     if (categoryExists.length > 0) {
-      return res.json({ message: 'Category with this title already exists' });
+      return res
+        .status(400)
+        .json({ message: 'Category with this title already exists' });
     }
     const category_id =
       categories && categories.length === 0
@@ -38,14 +43,24 @@ exports.getCategories = async (req, res) => {
 exports.updateCategory = async (req, res) => {
   try {
     const { category_id } = req.params;
+    const category_ = await Category.findOne({ category_id });
     const elements = Object.keys(req.body);
     elements.forEach((element) => {
-      if (element !== 'type' && element !== 'title') {
+      if (element !== 'title') {
         return res.json({
           message: `${element} is not a valid element for category`,
         });
       }
     });
+    const categoryExists = await Category.find({
+      title: req.body.title.toLowerCase(),
+      type: category_.type,
+    });
+    if (categoryExists.length > 0) {
+      return res
+        .status(400)
+        .json({ message: 'Category with this title already exists' });
+    }
     const category = await Category.findOneAndUpdate(
       {
         category_id,

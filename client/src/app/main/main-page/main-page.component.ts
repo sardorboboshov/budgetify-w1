@@ -6,9 +6,13 @@ import { Component } from '@angular/core';
 })
 export class MainPageComponent {
   selectedAccountIdx: number = 0;
-
+  rerenderAccounts!: () => void;
   setAccountIdx(idx: number) {
     this.selectedAccountIdx = idx;
+  }
+
+  rerenderAccountsFn(Fn: () => void) {
+    this.rerenderAccounts = Fn;
   }
   constructor() {}
 }

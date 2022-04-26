@@ -1,8 +1,24 @@
 <div class="wrapper">
-  <div *ngFor="let category of categories$ | async" class="container">
-    <app-single-category
-      [category]="category"
-      [rerenderCategories]="rerenderCategories"
-    ></app-single-category>
-  </div>
+  <section class="categories">
+    <div *ngFor="let category of displayCategories" class="container">
+      <app-single-category
+        [category]="category"
+        [rerenderCategories]="rerenderCategories"
+      ></app-single-category>
+    </div>
+  </section>
+  <section class="actions">
+    <mat-card class="type font" (click)="setCategoryType('income')">
+      <img src="../../../assets/income.png" alt="" />
+      Income
+    </mat-card>
+    <mat-card class="type font" (click)="setCategoryType('expense')">
+      <img src="../../../assets/expense.png" alt="" />
+      Expenses
+    </mat-card>
+    <mat-card class="type add font" (click)="openDialog()">
+      <img src="../../../assets/add.png" alt="" />
+      Add Category
+    </mat-card>
+  </section>
 </div>

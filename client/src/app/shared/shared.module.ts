@@ -17,6 +17,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
+import { MatDialogModule } from '@angular/material/dialog';
 @NgModule({
   declarations: [],
   imports: [
@@ -37,7 +38,8 @@ import { FormsModule } from '@angular/forms';
     MatNativeDateModule,
     MatRadioModule,
     MatSelectModule,
-    FormsModule
+    FormsModule,
+    MatDialogModule
   ],
   exports: [
     MatInputModule,
@@ -55,7 +57,8 @@ import { FormsModule } from '@angular/forms';
     MatNativeDateModule,
     MatRadioModule,
     MatSelectModule,
-    FormsModule
+    FormsModule,
+    MatDialogModule
   ]
 })
 export class SharedModule {}

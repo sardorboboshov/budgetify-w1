@@ -1,10 +1,5 @@
-import {
-  Component,
-  OnInit,
-  OnChanges,
-  OnDestroy,
-  SimpleChanges
-} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { getCurrencySymbol } from '@angular/common';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
@@ -12,26 +7,30 @@ import { ITransaction } from '../../models/transactions-item.model';
 import { ICategory } from '../../models/category.model';
 import { MainService } from '../../services/main.service';
 import { DateAdapter } from '@angular/material/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-transactions-edit',
   templateUrl: './transactions-edit.component.html',
   styleUrls: ['./transactions-edit.component.scss']
 })
-export class TransactionsEditComponent implements OnInit, OnChanges, OnDestroy {
+export class TransactionsEditComponent implements OnInit, OnDestroy {
   accountId!: number;
   transactionId!: number;
   transActionData!: ITransaction;
   transactionSubscription!: Subscription;
   categories$: Observable<ICategory[]> = new Observable<[]>();
   constructor(
+    private snackBar: MatSnackBar,
     private activeRouter: ActivatedRoute,
     private mainService: MainService,
     private dateAdapter: DateAdapter<Date>,
     private router: Router
   ) {
-    this.dateAdapter.setLocale('fr-CH');
+    this.dateAdapter.setLocale('en-GB');
   }
-
+  getCurrencySymbol(currency: string) {
+    return getCurrencySymbol(currency, 'narrow');
+  }
   transactionForm = new FormGroup({
     title: new FormControl({ value: '', disabled: false }, [
       Validators.maxLength(128),
@@ -43,7 +42,7 @@ export class TransactionsEditComponent implements OnInit, OnChanges, OnDestroy {
     amount: new FormControl({ value: '', disabled: false }, [
       Validators.min(0.1),
       Validators.required,
-      Validators.pattern('^[0-9]*')
+      Validators.pattern('^([0-9]*[.])?[0-9]*')
     ]),
     createdAt: new FormControl({ value: '', disabled: false }, [
       Validators.required
@@ -57,23 +56,6 @@ export class TransactionsEditComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit(): void {
     this.getTransactionData();
     this.getCategoryData();
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['transActionData']) {
-      this.transactionForm.get('title')?.setValue(this.transActionData.title);
-      this.transactionForm
-        .get('category')
-        ?.setValue(this.transActionData.category);
-      this.transactionForm
-        .get('date')
-        ?.setValue(this.transActionData.createdAt);
-      this.transactionForm.get('type')?.setValue(this.transActionData.type);
-      this.transactionForm.get('amount')?.setValue(this.transActionData.amount);
-      this.transactionForm
-        .get('description')
-        ?.setValue(this.transActionData.description);
-    }
   }
 
   ngOnDestroy(): void {
@@ -140,8 +122,25 @@ export class TransactionsEditComponent implements OnInit, OnChanges, OnDestroy {
         createdAt: this.transactionForm.value.createdAt,
         description: this.transactionForm.value.description
       })
-      .subscribe(() => {
-        this.navigate();
+      .subscribe({
+        next: () => {
+          this.navigate();
+        },
+        error: (err) => {
+          this.snackBar.open('Something went wrong, please try again', 'OK', {
+            duration: 1600
+          });
+        },
+        complete: () => {
+          this.snackBar.open('Transaction updated successfully', 'OK', {
+            duration: 1600,
+            verticalPosition: 'top'
+          });
+        }
       });
+  }
+
+  today() {
+    return new Date();
   }
 }

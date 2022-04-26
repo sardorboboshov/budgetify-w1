@@ -20,13 +20,14 @@ import { MainService } from '../services/main.service';
 })
 export class TransactionsComponent implements OnInit, OnChanges, OnDestroy {
   @Input() selectedAccountIdx: number = 0;
+  @Input() rerenderAccounts!: () => void;
   @Output() transActionsView: EventEmitter<any> = new EventEmitter();
   transActionsData: ITransaction[] = [];
-  currency: string = '';
+  displayTransactionsData: ITransaction[] = [];
+
   typeSet: string = '';
 
   private transactionSubscription!: Subscription;
-  private accountSubscription!: Subscription;
   constructor(private mainService: MainService, private router: Router) {}
   navigate(index: number) {
     this.router.navigate(['/main', this.selectedAccountIdx, index]);
@@ -45,8 +46,11 @@ export class TransactionsComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy(): void {
     this.transactionSubscription.unsubscribe();
-    this.accountSubscription.unsubscribe();
   }
+
+  rerenderTransactions = () => {
+    this.ngOnInit();
+  };
 
   getTransActionsData() {
     const user_id = localStorage.getItem('userId');
@@ -54,27 +58,18 @@ export class TransactionsComponent implements OnInit, OnChanges, OnDestroy {
       .getAllTransactionsData(Number(user_id), this.selectedAccountIdx)
       .subscribe((res: any) => {
         this.transActionsData = res.transactions;
-      });
-    this.accountSubscription = this.mainService
-      .getAccountData(Number(user_id), this.selectedAccountIdx)
-      .subscribe((res: any) => {
-        this.currency = res.currency;
+        this.displayTransactionsData = res.transactions;
       });
   }
   setTransActionsType = (type: string): void => {
-    const user_id = localStorage.getItem('userId');
-    this.transactionSubscription = this.mainService
-      .getAllTransactionsData(Number(user_id), this.selectedAccountIdx)
-      .subscribe((res: any) => {
-        if (this.typeSet === type) {
-          this.transActionsData = res.transactions;
-          this.typeSet = '';
-        } else {
-          this.transActionsData = res.transactions.filter(
-            (transaction: any) => transaction.type === type
-          );
-          this.typeSet = type;
-        }
-      });
+    if (this.typeSet === type) {
+      this.typeSet = '';
+      this.displayTransactionsData = this.transActionsData;
+    } else {
+      this.typeSet = type;
+      this.displayTransactionsData = this.transActionsData.filter(
+        (transaction) => transaction.type === type
+      );
+    }
   };
 }

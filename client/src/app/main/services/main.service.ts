@@ -29,7 +29,32 @@ export class MainService {
   getAccountData(id: number, accountId: number) {
     return this.http
       .get(`${this.userUrl}/${id}/${accountId}`)
-      .pipe(map((data: any) => data));
+      .pipe(map((data: any) => data.account));
+  }
+
+  createAccount(reqBody: Object) {
+    const userId = localStorage.getItem('userId');
+    return this.http.post(`${this.userUrl}/${userId}`, reqBody);
+  }
+
+  updateAccount(id: number, accountId: number, reqBody: Object) {
+    return this.http.patch(`${this.userUrl}/${id}/${accountId}`, reqBody);
+  }
+
+  deleteAccount(accountId: number) {
+    const userId = localStorage.getItem('userId');
+    return this.http.delete(`${this.userUrl}/${userId}/${accountId}`);
+  }
+
+  getAccountCurrency(accountIdx: number) {
+    const userId = localStorage.getItem('userId');
+    return this.http.get(`${this.userUrl}/${userId}/${accountIdx}/currency`);
+  }
+
+  isAccountEmpty(id: number, accountId: number) {
+    return this.http
+      .get(`${this.userUrl}/${id}/${accountId}/transactions`)
+      .pipe(map((data: any) => data.transactions));
   }
 
   getAllTransactionsData(id: number, accountId: number) {
@@ -62,6 +87,16 @@ export class MainService {
     );
   }
 
+  createTransaction(id: number, accountId: number, reqBody: Object) {
+    return this.http.post(`${this.userUrl}/${id}/${accountId}`, reqBody);
+  }
+
+  deleteTransaction(id: number, accountId: number, transactionId: number) {
+    return this.http.delete(
+      `${this.userUrl}/${id}/${accountId}/${transactionId}`
+    );
+  }
+
   getAllCategories() {
     return this.http
       .get(this.categoriesUrl)
@@ -75,5 +110,9 @@ export class MainService {
   }
   deleteCategory(categoryId: string) {
     return this.http.delete(`${this.categoriesUrl}/${categoryId}`);
+  }
+
+  createCategory(reqBody: Object) {
+    return this.http.post(this.categoriesUrl, reqBody);
   }
 }

@@ -16,7 +16,6 @@
       >
         <mat-label class="form__text">Category</mat-label>
         <mat-select
-          value="salary"
           class="form__text"
           [value]="transaction.category"
           formControlName="category"
@@ -36,7 +35,7 @@
       </mat-form-field>
       <mat-form-field appearance="outline" class="form__outline">
         <mat-label class="form__text"
-          >Amount in {{ transaction.currency }}</mat-label
+          >Amount in {{ getCurrencySymbol(transaction.currency) }}</mat-label
         >
         <input matInput formControlName="amount" class="form__text" />
         <mat-error *ngIf="transactionForm.controls['amount'].invalid"
@@ -52,6 +51,7 @@
           [value]="transaction.createdAt"
           [matDatepicker]="picker"
           [min]="transaction.createdAt"
+          [max]="today()"
         />
         <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>

@@ -1,0 +1,36 @@
+<section class="wrapper">
+  <section>
+    <section class="container">
+      <div class="header">
+        <div class="header__title">Edit Account</div>
+        <mat-icon class="header__close" (click)="onNoClick()">close</mat-icon>
+      </div>
+    </section>
+    <form [formGroup]="accountForm" class="form">
+      <mat-form-field appearance="outline" class="form__outline">
+        <mat-label class="form__text">Title</mat-label>
+        <input matInput formControlName="title" class="form__text" />
+        <mat-error *ngIf="accountForm.controls['title'].invalid"
+          >Please enter a title that doesn't exceed 128 characters</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="form__outline">
+        <mat-label class="form__text">Description</mat-label>
+        <input matInput formControlName="description" class="form__text" />
+      </mat-form-field>
+    </form>
+  </section>
+  <section class="footer">
+    <section class="footer__container">
+      <button
+        mat-button
+        class="footer__container__save"
+        [disabled]="accountForm.controls['title'].invalid"
+        (click)="updateAccount()"
+      >
+        Save
+      </button>
+      <button mat-button (click)="onNoClick()">Cancel</button>
+    </section>
+  </section>
+</section>
