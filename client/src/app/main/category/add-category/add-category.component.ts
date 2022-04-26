@@ -41,7 +41,7 @@ export class AddCategoryComponent {
       },
       error: (err) => {
         this.dialogRef.close();
-        this.snackBar.open('Such category already exists', 'OK', {
+        this.snackBar.open(err.error.message, 'OK', {
           duration: 2000,
           verticalPosition: 'top'
         });
